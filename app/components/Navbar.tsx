@@ -1,31 +1,41 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import TransitionLink from "./TransitionLink";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Some pages always use the scrolled (dark) appearance regardless of scroll
+  const alwaysDark = pathname !== "/";
+  const isDark = alwaysDark || scrolled;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // On hero (top): white text on dark image. After scroll / on inner pages: dark frosted bar.
+  const navTextColor = isDark ? "var(--st)" : "rgba(255,255,255,0.92)";
 
   return (
     <header
       className="fixed top-0 inset-x-0 z-50 transition-all duration-500"
       style={{
-        backgroundColor: scrolled ? "color-mix(in srgb, var(--sb) 30%, transparent)" : "transparent",
-        borderBottom: scrolled ? "1px solid var(--sbr)" : "1px solid transparent",
-        backdropFilter: scrolled ? "blur(16px) saturate(1.4)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(16px) saturate(1.4)" : "none",
+        backgroundColor: isDark
+          ? "color-mix(in srgb, var(--sb) 88%, transparent)"
+          : "transparent",
+        borderBottom: isDark ? "1px solid var(--sbr)" : "1px solid transparent",
+        backdropFilter: isDark ? "blur(20px) saturate(1.5)" : "none",
+        WebkitBackdropFilter: isDark ? "blur(20px) saturate(1.5)" : "none",
       }}
     >
-      <nav className="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+      <nav className="mx-auto max-w-[1500px] px-6 md:px-14 h-16 md:h-20 flex items-center justify-between">
         {/* Logo */}
         <TransitionLink href="/" className="flex items-center">
           <Image
@@ -33,67 +43,113 @@ export default function Navbar() {
             alt="Awakynn"
             width={120}
             height={36}
-            className="h-16 w-auto object-contain"
+            className="h-12 md:h-14 w-auto object-contain"
             priority
           />
         </TransitionLink>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-6">
-          <TransitionLink
-            href="/timetable"
-            className="text-sm font-medium tracking-wide transition-colors"
-            style={{ color: "var(--st)" }}
-          >
-            Timetable
-          </TransitionLink>
+        <div className="hidden md:flex items-center gap-8">
+          {[
+            { label: "Timetable", href: "/timetable" },
+          ].map(({ label, href }) => (
+            <TransitionLink
+              key={label}
+              href={href}
+              className="text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-colors duration-300 hover:opacity-60"
+              style={{ color: navTextColor }}
+            >
+              {label}
+            </TransitionLink>
+          ))}
+
           <a
             href="#contact"
-            className="text-sm font-medium px-5 py-2 rounded-full transition-all duration-300"
+            className="ml-2 flex items-center justify-between gap-6 px-5 py-2.5 border text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-all duration-300"
             style={{
-              backgroundColor: "var(--sp)",
-              color: "var(--sb)",
+              borderColor: isDark ? "var(--st)" : "rgba(255,255,255,0.75)",
+              color: navTextColor,
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget;
+              el.style.backgroundColor = isDark ? "var(--st)" : "rgba(255,255,255,1)";
+              el.style.color = isDark ? "var(--sb)" : "#000";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget;
+              el.style.backgroundColor = "transparent";
+              el.style.color = navTextColor;
             }}
           >
             Book a Session
           </a>
         </div>
 
-        {/* Mobile menu toggle */}
+        {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2 rounded-lg transition-colors"
-          style={{ color: "var(--st)" }}
+          className="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8 focus:outline-none"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
         >
-          {open ? <X size={22} /> : <Menu size={22} />}
+          <span
+            className="block h-px w-full transition-all duration-300 origin-center"
+            style={{
+              backgroundColor: navTextColor,
+              transform: open ? "translateY(7px) rotate(45deg)" : "none",
+            }}
+          />
+          <span
+            className="block h-px w-full transition-all duration-300"
+            style={{
+              backgroundColor: navTextColor,
+              opacity: open ? 0 : 1,
+            }}
+          />
+          <span
+            className="block h-px w-full transition-all duration-300 origin-center"
+            style={{
+              backgroundColor: navTextColor,
+              transform: open ? "translateY(-7px) rotate(-45deg)" : "none",
+            }}
+          />
         </button>
       </nav>
 
       {/* Mobile drawer */}
-      {open && (
-        <div
-          className="md:hidden border-t px-6 pt-4 pb-6 flex flex-col gap-4"
-          style={{ backgroundColor: "var(--sb)", borderColor: "var(--sbr)" }}
-        >
-          <TransitionLink
-            href="/timetable"
-            className="text-base font-medium py-1"
-            style={{ color: "var(--st)" }}
-            onClick={() => setOpen(false)}
-          >
-            Timetable
-          </TransitionLink>
+      <div
+        className="md:hidden overflow-hidden transition-all duration-500"
+        style={{
+          maxHeight: open ? "400px" : "0px",
+          backgroundColor: "color-mix(in srgb, var(--sb) 96%, transparent)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderBottom: open ? "1px solid var(--sbr)" : "none",
+        }}
+      >
+        <div className="px-6 pt-5 pb-7 flex flex-col gap-5">
+          {[
+            { label: "Timetable", href: "/timetable" },
+          ].map(({ label, href }) => (
+            <TransitionLink
+              key={label}
+              href={href}
+              className="text-xs font-medium tracking-[0.22em] uppercase py-1 transition-opacity hover:opacity-60"
+              style={{ color: "var(--st)" }}
+              onClick={() => setOpen(false)}
+            >
+              {label}
+            </TransitionLink>
+          ))}
           <a
             href="#contact"
-            className="text-sm font-medium px-5 py-2.5 rounded-full text-center transition-all"
-            style={{ backgroundColor: "var(--sp)", color: "var(--sb)" }}
+            className="mt-1 flex items-center justify-between px-5 py-3 border text-xs font-medium tracking-[0.22em] uppercase"
+            style={{ borderColor: "var(--st)", color: "var(--st)" }}
             onClick={() => setOpen(false)}
           >
-            Book a Session
+            Book a Session <span>›</span>
           </a>
         </div>
-      )}
+      </div>
     </header>
   );
 }

@@ -1,25 +1,19 @@
 import Hero from "./components/Hero";
-import MarqueeStrip from "./components/MarqueeStrip";
-import OfferingsSection from "./components/OfferingsSection";
-import PhilosophySection from "./components/PhilosophySection";
-import ScheduleSection from "./components/ScheduleSection";
-import AboutSection from "./components/AboutSection";
-import SisterBrandsSection from "./components/SisterBrandsSection";
-import CTASection from "./components/CTASection";
+import BrandCards from "./components/BrandCards";
+import HorizontalJourney from "./components/HorizontalJourney";
+import WellnessPathway from "./components/WellnessPathway";
+import OfferingsGallery from "./components/OfferingsGallery";
+import JournalSection from "./components/JournalSection";
 
 export default function Home() {
   return (
     <main>
       <Hero />
-      <MarqueeStrip />
-      <OfferingsSection />
-      <PhilosophySection />
-      <ScheduleSection />
-      <AboutSection />
-      <SisterBrandsSection />
-      <CTASection />
+      <BrandCards />
+      <HorizontalJourney />
+      <WellnessPathway />
+      <OfferingsGallery />
+      <JournalSection />
     </main>
   );
 }
-
-

@@ -28,25 +28,27 @@ function getSeasonColor(): string {
   return getComputedStyle(document.documentElement).getPropertyValue("--sp").trim() || "#D4A54B";
 }
 
-// 10 strips — flex ratios increase top→bottom (narrow at top, tall at bottom)
-const FLEX_VALS = [0.6, 0.8, 1.0, 1.25, 1.5, 1.8, 2.1, 2.5, 3.0, 3.6];
+// 18 strips — equal height for a tight venetian-blind wipe
+const FLEX_VALS = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 const N = FLEX_VALS.length;
 
-const COVER_DUR  = 0.38; // how long each strip takes to expand
-const REVEAL_DUR = 0.36;
-const STAGGER    = 0.045;
+const COVER_DUR  = 0.32;
+const REVEAL_DUR = 0.30;
+const STAGGER    = 0.028;
 const EASE: [number, number, number, number] = [0.76, 0, 0.24, 1];
 
 export default function PageTransitionProvider({ children }: { children: ReactNode }) {
   const router   = useRouter();
   const pathname = usePathname();
 
-  // One animation control per strip — must be declared unconditionally
-  const c0 = useAnimation(); const c1 = useAnimation(); const c2 = useAnimation();
-  const c3 = useAnimation(); const c4 = useAnimation(); const c5 = useAnimation();
-  const c6 = useAnimation(); const c7 = useAnimation(); const c8 = useAnimation();
-  const c9 = useAnimation();
-  const controls = [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9];
+  // One animation control per strip — must be declared unconditionally (18 strips)
+  const c0  = useAnimation(); const c1  = useAnimation(); const c2  = useAnimation();
+  const c3  = useAnimation(); const c4  = useAnimation(); const c5  = useAnimation();
+  const c6  = useAnimation(); const c7  = useAnimation(); const c8  = useAnimation();
+  const c9  = useAnimation(); const c10 = useAnimation(); const c11 = useAnimation();
+  const c12 = useAnimation(); const c13 = useAnimation(); const c14 = useAnimation();
+  const c15 = useAnimation(); const c16 = useAnimation(); const c17 = useAnimation();
+  const controls = [c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17];
 
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [stripColor, setStripColor] = useState("#D4A54B");
@@ -124,7 +126,8 @@ export default function PageTransitionProvider({ children }: { children: ReactNo
   const navigate = useCallback(
     async (href: string) => {
       if (href === pathname || isTransitioning) return;
-      setStripColor(getSeasonColor());
+      // Inner pages (non-home) use forest green; home uses seasonal gold
+      setStripColor(href === "/" ? getSeasonColor() : "#2F4F46");
       setIsTransitioning(true);
       await coverScreen();
       window.scrollTo({ top: 0, behavior: "instant" });
