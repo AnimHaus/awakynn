@@ -1,13 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { offerings } from "../lib/data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -29,58 +23,47 @@ export default function OfferingsGallery() {
     offset: ["start end", "end start"],
   });
 
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const smx = useSpring(mx, { stiffness: 50, damping: 20 });
-  const smy = useSpring(my, { stiffness: 50, damping: 20 });
-
-  const handleMove = (e: React.PointerEvent) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width - 0.5);
-    my.set((e.clientY - r.top) / r.height - 0.5);
-  };
-
   return (
     <section
       id="offerings"
       ref={ref}
-      onPointerMove={handleMove}
-      className="relative min-h-[160vh] overflow-hidden bg-background py-32"
+      className="relative overflow-hidden bg-background py-32 md:min-h-[160vh]"
     >
       {/* Centered editorial framing text behind cards */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <motion.h2
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease }}
-          className="font-display max-w-[18ch] text-center text-[12vw] font-light leading-[0.85] text-forest/8 md:text-[9rem]"
-        >
+        <h2 className="font-display max-w-[18ch] text-center text-[12vw] font-light leading-[0.85] text-forest/8 md:text-[9rem]">
           The Art of Practice
-        </motion.h2>
+        </h2>
       </div>
 
       <div className="relative z-10 mx-auto mb-16 max-w-[1500px] px-6 md:px-10">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease, delay: 0.1 }}
-          className="font-display mt-4 max-w-xl text-3xl font-light leading-tight text-forest md:text-4xl"
-        >
+        <p className="font-display mt-4 max-w-xl text-3xl font-light leading-tight text-forest md:text-4xl">
           Each offering is a doorway — a small ceremony, an act of becoming.
-        </motion.p>
+        </p>
       </div>
 
-      <div className="relative mx-auto h-[120vh] max-w-[1500px] px-6 md:px-10">
+      {/* Mobile: 2-col grid */}
+      <div className="md:hidden grid grid-cols-2 gap-4 px-6 pb-8">
+        {offerings.map((item, i) => (
+          <div key={item.name} className="relative aspect-[3/4] overflow-hidden rounded-xl" style={{ background: tile(i) }}>
+            <img src={item.image} alt={item.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent" />
+            <div className="absolute bottom-0 p-3">
+              <h3 className="font-display text-sm font-light leading-tight text-white">{item.name}</h3>
+              <p className="text-[0.62rem] tracking-[0.1em] text-white/60">{item.note}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: floating parallax gallery */}
+      <div className="hidden md:block relative mx-auto h-[120vh] max-w-[1500px] px-6 md:px-10">
         {offerings.map((item, i) => (
           <FloatingOffering
             key={item.name}
             offering={item}
             index={i}
             progress={scrollYProgress}
-            smx={smx}
-            smy={smy}
           />
         ))}
       </div>
@@ -92,28 +75,20 @@ function FloatingOffering({
   offering,
   index,
   progress,
-  smx,
-  smy,
 }: {
   offering: (typeof offerings)[number];
   index: number;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  smx: ReturnType<typeof useSpring>;
-  smy: ReturnType<typeof useSpring>;
 }) {
   const depth = offering.depth;
   const depthScale = 0.82 + depth * 0.12;
 
   const yShift = useTransform(progress, [0, 1], [80 + depth * 60, -80 - depth * 60]);
-  const px = useTransform(smx, [-0.5, 0.5], [-(depth + 1) * 16, (depth + 1) * 16]);
-  const py = useTransform(smy, [-0.5, 0.5], [-(depth + 1) * 12, (depth + 1) * 12]);
 
   return (
     <motion.div
       style={{
         y: yShift,
-        x: px,
-        translateY: py,
         zIndex: 10 + depth,
         scale: depthScale,
         filter: depth === 0 ? "blur(0.4px)" : "none",

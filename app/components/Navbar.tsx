@@ -11,7 +11,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   // Some pages always use the scrolled (dark) appearance regardless of scroll
-  const alwaysDark = pathname !== "/";
+  const alwaysDark = pathname !== "/" && pathname !== "/yoga-day";
   const isDark = alwaysDark || scrolled;
 
   useEffect(() => {
@@ -52,6 +52,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           {[
             { label: "Timetable", href: "/timetable" },
+            { label: "Yoga Day", href: "/yoga-day" }
           ].map(({ label, href }) => (
             <TransitionLink
               key={label}
@@ -63,8 +64,8 @@ export default function Navbar() {
             </TransitionLink>
           ))}
 
-          <a
-            href="#contact"
+          <TransitionLink
+            href="/contact"
             className="ml-2 flex items-center justify-between gap-6 px-5 py-2.5 border text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-all duration-300"
             style={{
               borderColor: isDark ? "var(--st)" : "rgba(255,255,255,0.75)",
@@ -82,7 +83,7 @@ export default function Navbar() {
             }}
           >
             Book a Session
-          </a>
+          </TransitionLink>
         </div>
 
         {/* Mobile hamburger */}
@@ -129,6 +130,7 @@ export default function Navbar() {
         <div className="px-6 pt-5 pb-7 flex flex-col gap-5">
           {[
             { label: "Timetable", href: "/timetable" },
+            { label: "Yoga Day", href: "/yoga-day" }
           ].map(({ label, href }) => (
             <TransitionLink
               key={label}
@@ -140,14 +142,14 @@ export default function Navbar() {
               {label}
             </TransitionLink>
           ))}
-          <a
-            href="#contact"
+          <TransitionLink
+            href="/contact"
             className="mt-1 flex items-center justify-between px-5 py-3 border text-xs font-medium tracking-[0.22em] uppercase"
             style={{ borderColor: "var(--st)", color: "var(--st)" }}
             onClick={() => setOpen(false)}
           >
             Book a Session <span>›</span>
-          </a>
+          </TransitionLink>
         </div>
       </div>
     </header>

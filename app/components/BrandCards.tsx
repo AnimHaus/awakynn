@@ -1,11 +1,10 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { brands, type Brand } from "../lib/data";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
-const rotations = [-2.5, 1.8, 2.2];
+const rotationClasses = [
+  "[transform:rotate(-2.5deg)] hover:[transform:scale(1.03)_rotate(0deg)]",
+  "[transform:rotate(1.8deg)] hover:[transform:scale(1.03)_rotate(0deg)]",
+  "[transform:rotate(2.2deg)] hover:[transform:scale(1.03)_rotate(0deg)]",
+];
 
 export default function BrandCards() {
   return (
@@ -15,36 +14,15 @@ export default function BrandCards() {
     >
       {/* Section intro — asymmetric */}
       <div className="mx-auto mb-16 max-w-[1500px] px-6 md:px-10">
-        <motion.span
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease }}
-          className="eyebrow text-gold"
-        >
-          One ecosystem · Three sister houses
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease, delay: 0.1 }}
-          className="font-display mt-4 max-w-3xl text-5xl font-light leading-[0.95] text-forest md:text-7xl"
-        >
+        <h2 className="font-display mt-4 max-w-3xl text-5xl font-light leading-[0.95] text-forest md:text-7xl">
           The universe
           <br />
           <span className="italic text-gold">comes alive.</span>
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="mt-6 max-w-sm text-base leading-relaxed text-charcoal/65 md:ml-[40%]"
-        >
+        </h2>
+        <p className="mt-6 max-w-sm text-base leading-relaxed text-charcoal/65 md:ml-[40%]">
           Awakynn sits at the centre of a wellness constellation. Each sister brand
           steps forward in its own domain — yet never leaves the orbit.
-        </motion.p>
+        </p>
       </div>
 
       {/* Cards grid */}
@@ -60,17 +38,12 @@ export default function BrandCards() {
 }
 
 function Card({ brand, index }: { brand: Brand; index: number }) {
-  const rotate = rotations[index] ?? 0;
+  const rotCls = rotationClasses[index] ?? "";
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 60, rotate, scale: 0.94 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-8%" }}
-      transition={{ duration: 1, ease, delay: index * 0.1 }}
-      whileHover={{ scale: 1.03, rotate: 0 }}
-      style={{ rotate, color: "#FAF8F5" }}
-      className="grain group relative aspect-[3/4] cursor-pointer overflow-hidden rounded-[1.8rem] border border-charcoal/5 p-7 shadow-[0_40px_80px_-40px_rgba(34,34,34,0.45)] md:p-9"
+    <article
+      style={{ color: "#FAF8F5" }}
+      className={`grain group relative aspect-[3/4] cursor-pointer overflow-hidden rounded-[1.8rem] border border-charcoal/5 p-7 shadow-[0_40px_80px_-40px_rgba(34,34,34,0.45)] transition-[transform] duration-700 md:p-9 ${rotCls}`}
     >
       {/* House imagery */}
       <img
@@ -116,6 +89,6 @@ function Card({ brand, index }: { brand: Brand; index: number }) {
           </span>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }

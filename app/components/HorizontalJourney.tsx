@@ -15,20 +15,29 @@ export default function HorizontalJourney() {
   );
 
   return (
-    <section
-      id="journey"
-      ref={ref}
-      style={{ height: `${chapters.length * 100}vh` }}
-      className="relative"
-    >
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div style={{ x }} className="flex h-full">
-          {chapters.map((c, i) => (
-            <Chapter key={c.id} chapter={c} index={i} progress={scrollYProgress} />
-          ))}
-        </motion.div>
+    <>
+      {/* Mobile: vertical stacked chapters — sticky overlap on scroll */}
+      <div id="journey" className="md:hidden">
+        {chapters.map((c, i) => (
+          <MobileChapter key={c.id} chapter={c} index={i} total={chapters.length} />
+        ))}
       </div>
-    </section>
+
+      {/* Desktop: horizontal sticky scroll */}
+      <section
+        ref={ref}
+        style={{ height: `${chapters.length * 100}vh` }}
+        className="relative hidden md:block"
+      >
+        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+          <motion.div style={{ x }} className="flex h-full">
+            {chapters.map((c, i) => (
+              <Chapter key={c.id} chapter={c} index={i} progress={scrollYProgress} />
+            ))}
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -146,4 +155,67 @@ function isLightColor(hex: string): boolean {
   const b = parseInt(c.slice(4, 6), 16);
   // Perceived luminance
   return (r * 299 + g * 587 + b * 114) / 1000 > 128;
+}
+
+function MobileChapter({
+  chapter,
+  index,
+  total,
+}: {
+  chapter: (typeof chapters)[number];
+  index: number;
+  total: number;
+}) {
+  const lightBg = isLightColor(chapter.bg);
+  return (
+    <article
+      className="grain relative flex h-screen items-center overflow-hidden"
+      style={{
+        background: chapter.bg,
+        color: chapter.fg,
+        position: "sticky",
+        top: 0,
+        zIndex: index + 1,
+        /* clip so overlapping section hides the one behind it cleanly */
+        clipPath: "inset(0)",
+      }}
+    >
+      <img
+        src={chapter.image}
+        alt=""
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-25"
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `linear-gradient(180deg, ${chapter.bg} 38%, color-mix(in srgb, ${chapter.bg} 55%, transparent) 100%)`,
+        }}
+      />
+      <div className="relative z-10 w-full px-6 py-24">
+        <span
+          className="eyebrow"
+          style={{ color: chapter.fg, opacity: lightBg ? 0.85 : 0.65 }}
+        >
+          {chapter.index} — {chapter.kicker}
+        </span>
+        <h3 className="font-display mt-5 text-5xl font-light leading-[0.92]">
+          {chapter.title}
+        </h3>
+        <p
+          className="mt-6 max-w-sm text-base leading-relaxed"
+          style={{ opacity: lightBg ? 0.92 : 0.8 }}
+        >
+          {chapter.body}
+        </p>
+        <div className="mt-8 flex items-center gap-3">
+          <span
+            className="h-px w-12"
+            style={{ background: chapter.fg, opacity: lightBg ? 0.7 : 0.45 }}
+          />
+          <span className="text-sm font-medium tracking-[0.12em]">{chapter.brand}</span>
+        </div>
+      </div>
+    </article>
+  );
 }

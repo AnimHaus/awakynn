@@ -33,15 +33,6 @@ export default function WellnessPathway() {
     >
       {/* Header — asymmetric */}
       <div className="mx-auto mb-20 max-w-[1500px] px-6 md:px-10">
-        <motion.span
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease }}
-          className="eyebrow text-gold"
-        >
-          A day, designed
-        </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -208,6 +199,27 @@ export default function WellnessPathway() {
         </div>
 
       </div>
+
+      {/* ── Eligibility disclaimer ────────────────────────────────── */}
+      <div
+        className="mx-auto mt-20 max-w-[1500px] px-6 md:px-10"
+      >
+        <div
+          className="flex flex-col gap-4 border border-background/15 p-6 md:flex-row md:items-start md:gap-8 md:p-8"
+        >
+          <span className="eyebrow shrink-0 text-gold">Please note</span>
+          <p className="text-sm leading-[1.75]" style={{ color: "rgba(250,248,245,0.6)" }}>
+            Our programs are designed for able-bodied individuals in good general health.
+            They are <strong style={{ color: "rgba(250,248,245,0.85)", fontWeight: 500 }}>not suitable</strong> for
+            immobile patients, or persons who are deaf, non-verbal, currently pregnant,
+            or within the immediate post-pregnancy or post-physical-rehabilitation period.
+            If you are recovering from an injury, surgery, or a medical condition, please
+            consult your physician before joining. Our doctors and instructors are happy to
+            advise on the right time to begin your practice.
+          </p>
+        </div>
+      </div>
+
     </section>
   );
 }
