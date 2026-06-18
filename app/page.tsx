@@ -12,11 +12,11 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <OfferingsGallery />
       <InstructorSection />
       <HorizontalJourney />
       <BrandCards />
       <WellnessPathway />
-      <OfferingsGallery />
       <JournalSection />
     </main>
   );

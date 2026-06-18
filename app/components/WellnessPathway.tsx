@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import { pathway } from "../lib/data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const PATH =
+// Path control points in a 400×1000 viewBox
+const PATH_D =
   "M 200 40 C 60 160, 60 260, 200 360 S 340 560, 200 660 S 60 860, 200 960";
 
 const anchors = [
@@ -16,14 +17,149 @@ const anchors = [
   { x: 200, y: 960, side: "left" },
 ] as const;
 
+// Build a Path2D once from the SVG path string
+function buildPath(): Path2D {
+  return new Path2D(PATH_D);
+}
+
+// Get total length of the path by sampling (Path2D has no getTotalLength)
+// We approximate via a hidden SVGPathElement
+function getSVGLength(): number {
+  if (typeof document === "undefined") return 1000;
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg") as SVGSVGElement;
+  const p = document.createElementNS(ns, "path") as SVGPathElement;
+  p.setAttribute("d", PATH_D);
+  svg.appendChild(p);
+  document.body.appendChild(svg);
+  const len = p.getTotalLength();
+  document.body.removeChild(svg);
+  return len;
+}
+
+function PathCanvas({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const progressRef = useRef(0);
+  const rafRef = useRef<number>(0);
+  const totalLenRef = useRef<number>(0);
+
+  useEffect(() => {
+    totalLenRef.current = getSVGLength();
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // DPR-aware sizing
+    function resize() {
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx!.setTransform(1, 0, 0, 1, 0, 0);
+      // Scale canvas coords to match 400×1000 viewBox
+      const sx = canvas.width / 400;
+      const sy = canvas.height / 1000;
+      ctx!.scale(sx, sy);
+    }
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    // Scroll → update progressRef (no React state, no re-render)
+    function onScroll() {
+      const sec = sectionRef.current;
+      if (!sec) return;
+      const rect = sec.getBoundingClientRect();
+      const wh = window.innerHeight;
+      // progress 0→1 as section scrolls from 120% into view to 40% out
+      const raw = (wh * 0.1 - rect.top) / (rect.height - wh * 0.9);
+      progressRef.current = Math.min(1, Math.max(0, raw));
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    const path = buildPath();
+
+    function draw() {
+      if (!canvas || !ctx) return;
+      ctx.save();
+      // clear in viewBox space (400×1000)
+      ctx.clearRect(0, 0, 400, 1000);
+
+      const p = progressRef.current;
+      const len = totalLenRef.current;
+
+      // Ghost path
+      ctx.beginPath();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = "rgba(250,248,245,0.12)";
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = "round";
+      ctx.stroke(path);
+
+      // Drawn portion using clip trick: draw full path but clipped to a rect
+      // that grows from top as progress increases
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, 400, p * 1000);
+      ctx.clip();
+      // Gold-to-cream gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, 1000);
+      grad.addColorStop(0, "#C8A86B");
+      grad.addColorStop(1, "#F4EFE8");
+      ctx.beginPath();
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.stroke(path);
+      ctx.restore();
+
+      // Node dots
+      anchors.forEach((a) => {
+        const dotProgress = a.y / 1000;
+        if (p < dotProgress - 0.02) return;
+        const scale = Math.min(1, (p - dotProgress + 0.02) / 0.05);
+        ctx.save();
+        ctx.translate(a.x, a.y);
+        ctx.scale(scale, scale);
+        ctx.beginPath();
+        ctx.arc(0, 0, 7, 0, Math.PI * 2);
+        ctx.fillStyle = "#C8A86B";
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#2F4F46";
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      ctx.restore();
+      rafRef.current = requestAnimationFrame(draw);
+    }
+
+    rafRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("scroll", onScroll);
+      ro.disconnect();
+    };
+  }, [sectionRef]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute left-1/2 top-0 h-full w-[min(90vw,640px)] -translate-x-1/2"
+      aria-hidden
+    />
+  );
+}
+
 export default function WellnessPathway() {
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 0.8", "end 0.4"],
-  });
-
-  const draw = useTransform(scrollYProgress, [0, 0.9], [0, 1]);
 
   return (
     <section
@@ -94,57 +230,10 @@ export default function WellnessPathway() {
           ))}
         </div>
 
-        {/* ── Desktop: SVG winding path ──────────────────────────── */}
+        {/* ── Desktop: Canvas winding path ──────────────────────── */}
         <div className="hidden md:block">
-        {/* The curve */}
-        <svg
-          viewBox="0 0 400 1000"
-          preserveAspectRatio="xMidYMid meet"
-          className="absolute left-1/2 top-0 h-full w-[min(90vw,640px)] -translate-x-1/2"
-          aria-hidden
-        >
-          {/* Ghost path */}
-          <path
-            d={PATH}
-            fill="none"
-            stroke="rgba(250,248,245,0.12)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          {/* Drawn path */}
-          <motion.path
-            d={PATH}
-            fill="none"
-            stroke="url(#pathGradAwakynn)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            style={{ pathLength: draw }}
-          />
-          <defs>
-            <linearGradient id="pathGradAwakynn" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#C8A86B" />
-              <stop offset="100%" stopColor="#F4EFE8" />
-            </linearGradient>
-          </defs>
-
-          {/* Node dots on the curve */}
-          {anchors.map((a, i) => (
-            <motion.circle
-              key={i}
-              cx={a.x}
-              cy={a.y}
-              r="7"
-              fill="#C8A86B"
-              stroke="#2F4F46"
-              strokeWidth="3"
-              initial={{ scale: 0, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true, margin: "-20%" }}
-              transition={{ duration: 0.6, ease, delay: 0.2 + i * 0.15 }}
-              style={{ transformOrigin: `${a.x}px ${a.y}px` }}
-            />
-          ))}
-        </svg>
+        {/* Canvas replaces the SVG — drawn via RAF, zero React renders on scroll */}
+        <PathCanvas sectionRef={ref} />
 
         {/* Stop cards — alternating sides, anchored to curve heights */}
         <div className="relative" style={{ aspectRatio: "400 / 1000" }}>
@@ -161,8 +250,8 @@ export default function WellnessPathway() {
                 transition={{ duration: 0.9, ease, delay: 0.15 }}
                 className={`absolute w-[min(74vw,300px)] -translate-y-1/2 ${
                   isRight
-                    ? "left-1/2 ml-6 md:ml-16 text-left"
-                    : "right-1/2 mr-6 md:mr-16 text-right"
+                    ? "left-1/2 ml-6 md:ml-24 text-left"
+                    : "right-1/2 mr-6 md:mr-24 text-right"
                 }`}
                 style={{ top }}
               >
