@@ -32,13 +32,13 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-14">
           {/* Brand */}
-          <div className="md:col-span-2 flex flex-col gap-4">
+          <div className="md:col-span-2 flex items-start flex-col gap-4">
             <Image
               src="/logo_gold.png"
               alt="Awakynn"
               width={140}
-              height={42}
-              className="h-10 w-auto object-contain"
+              height={56}
+              className="h-20 w-auto object-contain"
             />
             <p
               className="text-sm font-light leading-relaxed max-w-sm"
