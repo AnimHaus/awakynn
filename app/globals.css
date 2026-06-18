@@ -1,26 +1,129 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Seasonal colour palettes ────────────────────────────────── */
+:root,
+[data-season="summer"] {
+  --sp: #D4A54B;         /* primary  – Sunrise Gold  */
+  --ss: #E8DCC7;         /* secondary – Warm Sand    */
+  --sa: #C66A42;         /* accent   – Terracotta    */
+  --sb: #FAF7F0;         /* bg       – Ivory Mist    */
+  --st: #3B312B;         /* text     – Deep Earth    */
+  --st2: #7a6a5a;        /* text muted               */
+  --sbr: #ddd0b0;        /* border                   */
+  --season-label: "Summer";
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-season="monsoon"] {
+  --sp: #6D8A73;
+  --ss: #D8DFDA;
+  --sa: #446A72;
+  --sb: #F4F7F5;
+  --st: #2F3D37;
+  --st2: #5a7060;
+  --sbr: #c2cec5;
+  --season-label: "Monsoon";
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-season="autumn"] {
+  --sp: #B86A3B;
+  --ss: #DCC9B5;
+  --sa: #6A3A35;
+  --sb: #F8F2EA;
+  --st: #3D2F28;
+  --st2: #7a6050;
+  --sbr: #d4bca0;
+  --season-label: "Autumn";
+}
+
+[data-season="winter"] {
+  --sp: #9EB8C7;
+  --ss: #DDE4E8;
+  --sa: #465A72;
+  --sb: #FAFBFC;
+  --st: #34404D;
+  --st2: #6a7a8a;
+  --sbr: #c4d0d8;
+  --season-label: "Winter";
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--sb);
+  color: var(--st);
+  transition: background-color 0.6s ease, color 0.6s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* ── Typography helpers ───────────────────────────────────────── */
+.font-heading {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+/* ── Utility: season colours ──────────────────────────────────── */
+.text-sp   { color: var(--sp); }
+.text-sa   { color: var(--sa); }
+.text-st   { color: var(--st); }
+.text-st2  { color: var(--st2); }
+.bg-sb     { background-color: var(--sb); }
+.bg-sp     { background-color: var(--sp); }
+.bg-ss     { background-color: var(--ss); }
+.bg-sa     { background-color: var(--sa); }
+.border-sbr { border-color: var(--sbr); }
+
+/* ── Fade-in animation ────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.8s ease both; }
+.fade-up-d1 { animation-delay: 0.15s; }
+.fade-up-d2 { animation-delay: 0.30s; }
+.fade-up-d3 { animation-delay: 0.45s; }
+.fade-up-d4 { animation-delay: 0.60s; }
+
+/* ── Divider ornament ─────────────────────────────────────────── */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--sp);
+}
+.ornament::before,
+.ornament::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--sp);
+  opacity: 0.4;
+}
+
+/* ── Service card hover ───────────────────────────────────────── */
+.service-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.12);
+}
+
+/* ── Nav link underline ───────────────────────────────────────── */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--sp);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
