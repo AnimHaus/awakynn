@@ -49,7 +49,10 @@ export default function OfferingsGallery() {
             <img src={item.image} alt={item.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent" />
             <div className="absolute bottom-0 p-3">
-              <h3 className="font-display text-sm font-light leading-tight text-white">{item.name}</h3>
+              <div className="flex items-end justify-between gap-1">
+                <h3 className="font-display text-sm font-light leading-tight text-white">{item.name}</h3>
+                <span className="shrink-0 text-sm font-semibold text-gold">{item.price}</span>
+              </div>
               <p className="text-[0.62rem] tracking-[0.1em] text-white/60">{item.note}</p>
             </div>
           </div>
