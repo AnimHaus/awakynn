@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { faInstagram, faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 const links = [
   {
@@ -63,6 +63,16 @@ export default function Footer() {
             >
               <FontAwesomeIcon icon={faInstagram} style={{ width: 16, height: 16 }} />
               @awakynn.yoga
+            </a>
+            <a
+              href="https://www.youtube.com/@awakynn.yogaofficial"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-medium transition-opacity hover:opacity-70 w-fit"
+              style={{ color: "var(--sp)" }}
+            >
+              <FontAwesomeIcon icon={faYoutube} style={{ width: 16, height: 16 }} />
+              @awakynn.yogaofficial
             </a>
           </div>
 
