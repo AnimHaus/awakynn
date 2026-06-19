@@ -5,7 +5,7 @@ import TransitionLink from "../components/TransitionLink";
 
 const socials = [
   { label: "Instagram", handle: "@awakynn.yoga", href: "https://instagram.com/awakynn.yoga" },
-  { label: "YouTube", handle: "Awakynn", href: "https://youtube.com/@awakynn" },
+  { label: "YouTube", handle: "Awakynn", href: "https://www.youtube.com/@awakynn.yogaofficial" },
 ];
 
 const faqs = [
