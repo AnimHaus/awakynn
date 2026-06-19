@@ -37,33 +37,42 @@ export default function Navbar() {
     >
       <nav className="mx-auto max-w-[1500px] px-6 md:px-14 h-16 md:h-20 flex items-center justify-between">
         {/* Logo */}
-        <TransitionLink href="/" className="flex items-center">
-          <Image
-            src="/logo_gold.png"
-            alt="Awakynn"
-            width={120}
-            height={36}
-            className="h-12 md:h-14 w-auto object-contain"
-            priority
-          />
-        </TransitionLink>
+        <div className="flex items-center gap-6">
+          <TransitionLink href="/" className="flex items-center">
+            <Image
+              src="/logo_gold.png"
+              alt="Awakynn"
+              width={120}
+              height={36}
+              className="h-12 md:h-16 w-auto object-contain"
+              priority
+            />
+          </TransitionLink>
+          <span className="text-white" style={{ color: navTextColor }}>|</span>
+          <TransitionLink
+            href="/yoga-day"
+            className="flex flex-col items-center gap-0.5 transition-opacity duration-300 hover:opacity-60"
+          >
+            <Image
+              src="https://cdn.awakynn.com/international-yoga-day-logo.png"
+              alt="International Yoga Day"
+              width={90}
+              height={36}
+              className="h-9 w-auto object-contain"
+            />
+          </TransitionLink>
+
+        </div>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {[
-            { label: "Timetable", href: "/timetable" },
-            { label: "Yoga Day", href: "/yoga-day" }
-          ].map(({ label, href }) => (
-            <TransitionLink
-              key={label}
-              href={href}
-              className="text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-colors duration-300 hover:opacity-60"
-              style={{ color: navTextColor }}
-            >
-              {label}
-            </TransitionLink>
-          ))}
-
+          <TransitionLink
+            href="/timetable"
+            className="text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-colors duration-300 hover:opacity-60"
+            style={{ color: navTextColor }}
+          >
+            Classes
+          </TransitionLink>
           <TransitionLink
             href="/contact"
             className="ml-2 flex items-center justify-between gap-6 px-5 py-2.5 border text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-all duration-300"
@@ -128,20 +137,33 @@ export default function Navbar() {
         }}
       >
         <div className="px-6 pt-5 pb-7 flex flex-col gap-5">
-          {[
-            { label: "Timetable", href: "/timetable" },
-            { label: "Yoga Day", href: "/yoga-day" }
-          ].map(({ label, href }) => (
-            <TransitionLink
-              key={label}
-              href={href}
-              className="text-xs font-medium tracking-[0.22em] uppercase py-1 transition-opacity hover:opacity-60"
+          <TransitionLink
+            href="/timetable"
+            className="text-xs font-medium tracking-[0.22em] uppercase py-1 transition-opacity hover:opacity-60"
+            style={{ color: "var(--st)" }}
+            onClick={() => setOpen(false)}
+          >
+            Timetable
+          </TransitionLink>
+          <TransitionLink
+            href="/yoga-day"
+            className="flex flex-col items-start gap-0.5 py-1 transition-opacity hover:opacity-60"
+            onClick={() => setOpen(false)}
+          >
+            <Image
+              src="https://cdn.awakynn.com/international-yoga-day-logo.png"
+              alt="International Yoga Day"
+              width={90}
+              height={36}
+              className="h-9 w-auto object-contain"
+            />
+            <span
+              className="text-[0.6rem] font-medium tracking-[0.2em] uppercase"
               style={{ color: "var(--st)" }}
-              onClick={() => setOpen(false)}
             >
-              {label}
-            </TransitionLink>
-          ))}
+              Join Us For
+            </span>
+          </TransitionLink>
           <TransitionLink
             href="/contact"
             className="mt-1 flex items-center justify-between px-5 py-3 border text-xs font-medium tracking-[0.22em] uppercase"

@@ -210,12 +210,6 @@ export default function YogaDayPage() {
           style={{ borderColor: "rgba(34,34,34,0.1)" }}
         >
           <div>
-            <span
-              className="block text-[0.65rem] font-medium tracking-[0.25em]"
-              style={{ color: "#C8A86B" }}
-            >
-              COMPLETELY FREE
-            </span>
             <h3
               className="font-display mt-3 text-3xl font-light md:text-4xl"
               style={{ color: "#2F4F46" }}
@@ -239,7 +233,7 @@ export default function YogaDayPage() {
               href={`https://youtube.com/watch?v=${YOUTUBE_VIDEO_ID}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center justify-between gap-8 border px-6 py-4 text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300 hover:bg-forest hover:text-white"
+              className="group inline-flex items-center justify-between gap-8 border px-6 py-4 text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300 hover:bg-forest hover:!text-white"
               style={{ borderColor: "#2F4F46", color: "#2F4F46" }}
             >
               Watch live on YouTube
