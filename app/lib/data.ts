@@ -167,7 +167,7 @@ export const offerings = [
     house: "AWAKYNN",
     note: "Community Practice",
     price: "₹49",
-    depth: 0,
+    depth: 1,
     image: "https://cdn.awakynn.com/offer_workshop.avif",
   },
   {

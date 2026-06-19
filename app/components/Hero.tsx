@@ -117,10 +117,7 @@ export default function Hero() {
             >
               A practice designed to{" "}
               <span className="italic font-light">awaken the body,</span>{" "}
-              still the mind{" "}
-              <span className="italic font-light">
-                and make discipline feel like home.
-              </span>
+              and <span className="italic font-light">still the mind</span>
             </h1>
 
             {/* CTA buttons — stack on mobile, side-by-side on sm+ */}

@@ -27,21 +27,11 @@ export default function InstructorSection() {
               className="relative aspect-[3/4] w-full overflow-hidden border border-charcoal/10"
               style={{ background: "linear-gradient(160deg,#2F4F46,#1c322c)" }}
             >
-              {/* <img
-                src="https://cdn.awakynn.com/instructor/monalisa-manna.jpg"
+              <img
+                src="https://cdn.awakynn.com/main_instructor.jpeg"
                 alt="Monalisa Manna — lead yoga instructor"
                 className="h-full w-full object-cover"
-              /> */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-40">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#faf8f5" strokeWidth="1">
-                  <rect x="3" y="3" width="18" height="18" rx="1" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <polyline points="21 15 16 10 5 21" />
-                </svg>
-                <span className="font-display text-[0.65rem] tracking-[0.2em] text-background/60">
-                  PHOTO PLACEHOLDER
-                </span>
-              </div>
+              />
             </div>
 
             {/* Floating credential badge */}
@@ -104,15 +94,6 @@ export default function InstructorSection() {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Bottom rule */}
-        <div className="mt-20 flex items-center gap-4 md:mt-28">
-          <span className="h-px flex-1" style={{ background: "rgba(34,34,34,0.08)" }} />
-          <span className="eyebrow" style={{ color: "rgba(34,34,34,0.3)" }}>
-            Guru · Shishya · Parampara
-          </span>
-          <span className="h-px flex-1" style={{ background: "rgba(34,34,34,0.08)" }} />
         </div>
 
       </div>

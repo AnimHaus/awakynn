@@ -9,11 +9,11 @@ const ease = [0.22, 1, 0.36, 1] as const;
 /** Gallery-style scatter — varied positions, never a grid. */
 const placement = [
   "left-[4%] top-[8%] w-[44%] md:left-[8%] md:w-[20%]",
-  "right-[6%] top-[2%] w-[42%] md:right-[14%] md:w-[18%]",
+  "right-[6%] top-[2%] w-[42%] md:right-[28%] md:w-[18%]",
   "left-[18%] top-[40%] w-[46%] md:left-[26%] md:top-[34%] md:w-[19%]",
-  "right-[4%] top-[44%] w-[44%] md:right-[8%] md:top-[40%] md:w-[20%]",
+  "right-[4%] top-[24%] w-[44%] md:right-[8%] md:top-[32%] md:w-[20%]",
   "left-[6%] top-[72%] w-[44%] md:left-[14%] md:top-[64%] md:w-[18%]",
-  "right-[14%] top-[76%] w-[42%] md:right-[24%] md:top-[68%] md:w-[19%]",
+  "right-[14%] top-[76%] w-[42%] md:right-[30%] md:top-[68%] md:w-[19%]",
 ];
 
 export default function OfferingsGallery() {
@@ -27,7 +27,7 @@ export default function OfferingsGallery() {
     <section
       id="offerings"
       ref={ref}
-      className="relative overflow-hidden bg-background py-32 md:min-h-[160vh]"
+      className="relative bg-background py-32 md:min-h-[160vh]"
     >
       {/* Centered editorial framing text behind cards */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
@@ -114,23 +114,27 @@ function FloatingOffering({
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/45 via-transparent to-transparent" />
-          <span className="font-display absolute bottom-4 left-4 text-[2.6rem] leading-none text-background/90">
-            {offering.house.charAt(0)}
-          </span>
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/75 via-charcoal/10 to-transparent" />
 
-        {/* Caption */}
-        <div className="mt-3">
-          <div className="flex items-baseline justify-between gap-3">
-            <h3 className="font-display text-lg font-normal leading-tight text-forest">
-              {offering.name}
-            </h3>
-            <span className="text-sm font-medium text-gold">{offering.price}</span>
+          {/* Top tag */}
+          <span className="absolute left-3 top-3 rounded-full bg-background/15 px-2.5 py-0.5 text-[0.6rem] tracking-[0.14em] text-white/80 backdrop-blur-sm">
+            {offering.note}
+          </span>
+
+          {/* Bottom details */}
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="flex items-end justify-between gap-2">
+              <h3 className="font-display text-base font-normal leading-tight text-white">
+                {offering.name}
+              </h3>
+              <span className="shrink-0 text-sm font-semibold text-gold">
+                {offering.price}
+              </span>
+            </div>
+            <p className="mt-1 text-[0.6rem] tracking-[0.14em] text-white/50">
+              {offering.house}
+            </p>
           </div>
-          <p className="text-[0.72rem] tracking-[0.12em] text-charcoal/50">
-            {offering.note} · {offering.house}
-          </p>
         </div>
       </motion.div>
     </motion.div>
