@@ -8,12 +8,12 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 /** Gallery-style scatter — varied positions, never a grid. */
 const placement = [
-  "left-[4%] top-[8%] w-[44%] md:left-[8%] md:w-[20%]",
+  "left-[4%] top-[1%] w-[44%] md:w-[20%]",
   "right-[6%] top-[2%] w-[42%] md:right-[28%] md:w-[18%]",
   "left-[18%] top-[40%] w-[46%] md:left-[26%] md:top-[34%] md:w-[19%]",
   "right-[4%] top-[24%] w-[44%] md:right-[8%] md:top-[32%] md:w-[20%]",
   "left-[6%] top-[72%] w-[44%] md:left-[14%] md:top-[64%] md:w-[18%]",
-  "right-[14%] top-[76%] w-[42%] md:right-[30%] md:top-[68%] md:w-[19%]",
+  "right-[14%] top-[76%] w-[42%] md:right-[28%] md:top-[68%] md:w-[19%]",
 ];
 
 export default function OfferingsGallery() {

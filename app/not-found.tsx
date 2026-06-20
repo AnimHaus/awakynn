@@ -52,7 +52,7 @@ export default function NotFound() {
             <span className="transition-transform duration-300 group-hover:translate-x-1">›</span>
           </TransitionLink>
           <TransitionLink
-            href="/timetable"
+            href="/classes"
             className="group inline-flex items-center justify-between gap-6 border px-6 py-3.5 text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300 hover:opacity-70"
             style={{ borderColor: "rgba(34,34,34,0.2)", color: "rgba(34,34,34,0.55)" }}
           >

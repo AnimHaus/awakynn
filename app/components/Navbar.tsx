@@ -67,7 +67,7 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           <TransitionLink
-            href="/timetable"
+            href="/classes"
             className="text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-colors duration-300 hover:opacity-60"
             style={{ color: navTextColor }}
           >
@@ -138,12 +138,12 @@ export default function Navbar() {
       >
         <div className="px-6 pt-5 pb-7 flex flex-col gap-5">
           <TransitionLink
-            href="/timetable"
+            href="/classes"
             className="text-xs font-medium tracking-[0.22em] uppercase py-1 transition-opacity hover:opacity-60"
             style={{ color: "var(--st)" }}
             onClick={() => setOpen(false)}
           >
-            Timetable
+            Classes
           </TransitionLink>
           <TransitionLink
             href="/yoga-day"

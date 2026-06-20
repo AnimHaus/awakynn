@@ -4,20 +4,30 @@ import { useState, useEffect } from "react";
 import TransitionLink from "../components/TransitionLink";
 
 // ── Countdown to 21 June 2026 10:00 AM IST ──────────────────────────────
-const EVENT_DATE = new Date("2026-06-21T04:30:00.000Z"); // 10:00 AM IST = 04:30 UTC
+const EVENT_DATE = new Date("2026-06-21T04:30:00.000Z"); // 10:00 AM IST
+const CLASS_END  = new Date("2026-06-22T01:30:00.000Z"); // next day 01:30 UTC
 
-function useCountdown(target: Date) {
-  const [diff, setDiff] = useState(() => target.getTime() - Date.now());
+const CALENDAR_LINK = "https://calendar.app.google/8rXdcDLtCQ9SP5Rq9";
+const MEET_LINK     = "https://meet.google.com/qba-iprk-bqn";
+
+function useCountdown(target: Date, end: Date) {
+  const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
-    const id = setInterval(() => setDiff(target.getTime() - Date.now()), 1000);
+    const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
-  }, [target]);
+  }, []);
+  const diff  = target.getTime() - now;
   const total = Math.max(diff, 0);
-  const days = Math.floor(total / 86400000);
+  const days  = Math.floor(total / 86400000);
   const hours = Math.floor((total % 86400000) / 3600000);
-  const mins = Math.floor((total % 3600000) / 60000);
-  const secs = Math.floor((total % 60000) / 1000);
-  return { days, hours, mins, secs, live: diff <= 0 };
+  const mins  = Math.floor((total % 3600000) / 60000);
+  const secs  = Math.floor((total % 60000) / 1000);
+  return {
+    days, hours, mins, secs,
+    live:    diff <= 0 && now < end.getTime(),
+    ended:   now >= end.getTime(),
+    joinVisible: now >= target.getTime() && now < end.getTime(),
+  };
 }
 
 // ── Replace with the actual YouTube live/video ID when available ─────────
@@ -32,7 +42,7 @@ const schedule = [
 ];
 
 export default function YogaDayPage() {
-  const { days, hours, mins, secs, live } = useCountdown(EVENT_DATE);
+  const { days, hours, mins, secs, live, ended, joinVisible } = useCountdown(EVENT_DATE, CLASS_END);
 
   return (
     <main style={{ backgroundColor: "#faf8f5", color: "#222222" }}>
@@ -82,7 +92,14 @@ export default function YogaDayPage() {
 
           {/* Countdown / Live indicator */}
           <div className="mt-4">
-            {live ? (
+            {ended ? (
+              <span
+                className="inline-flex items-center gap-2 border px-5 py-2.5 text-xs font-medium tracking-[0.2em] uppercase"
+                style={{ borderColor: "rgba(250,248,245,0.3)", color: "rgba(250,248,245,0.5)" }}
+              >
+                Event has ended
+              </span>
+            ) : live ? (
               <span
                 className="inline-flex items-center gap-2 border px-5 py-2.5 text-xs font-medium tracking-[0.2em] uppercase"
                 style={{ borderColor: "#C8A86B", color: "#C8A86B" }}
@@ -115,90 +132,31 @@ export default function YogaDayPage() {
               </div>
             )}
           </div>
-        </div>
-      </section>
 
-      {/* ── Live stream embed ────────────────────────────────────── */}
-      <section className="mx-auto max-w-[1200px] px-6 py-20 md:px-10 md:py-28">
-        <span
-          className="block text-[0.65rem] font-medium tracking-[0.25em]"
-          style={{ color: "#C8A86B" }}
-        >
-          LIVE STREAM
-        </span>
-        <h2
-          className="font-display mt-3 text-3xl font-light md:text-5xl"
-          style={{ color: "#2F4F46" }}
-        >
-          Watch live — free &amp; open to all
-        </h2>
-
-        {/* Responsive 16:9 iframe container */}
-        <div className="relative mt-10 w-full overflow-hidden border border-charcoal/10" style={{ paddingTop: "56.25%" }}>
-          <iframe
-            className="absolute inset-0 h-full w-full"
-            src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=0&rel=0&modestbranding=1`}
-            title="Awakynn — International Yoga Day Live Workshop"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          />
-        </div>
-
-        <p
-          className="mt-4 text-xs leading-relaxed"
-          style={{ color: "rgba(34,34,34,0.4)" }}
-        >
-          Stream begins at <strong>10:00 AM IST</strong> on 21 June 2026. Subscribe to
-          the Awakynn YouTube channel for a reminder.
-        </p>
-      </section>
-
-      {/* ── Schedule ────────────────────────────────────────────── */}
-      <section
-        className="grain py-24 md:py-32"
-        style={{ backgroundColor: "#2F4F46" }}
-      >
-        <div className="mx-auto max-w-[1500px] px-6 md:px-10">
-          <span
-            className="block text-[0.65rem] font-medium tracking-[0.25em]"
-            style={{ color: "#C8A86B" }}
-          >
-            PROGRAMME
-          </span>
-          <h2
-            className="font-display mt-3 text-3xl font-light text-white md:text-5xl"
-          >
-            What to expect
-          </h2>
-
-          <div className="mt-12 flex flex-col">
-            {schedule.map((item, i) => (
-              <div
-                key={item.title}
-                className="flex flex-col gap-1 border-t py-6 sm:flex-row sm:items-center sm:gap-10"
-                style={{ borderColor: "rgba(250,248,245,0.12)" }}
+          {/* CTA buttons — below the counter */}
+          <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
+            <a
+              href={CALENDAR_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-between gap-8 border px-6 py-3.5 text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300 hover:bg-white hover:!text-[#2f4f46]"
+              style={{ borderColor: "rgba(250,248,245,0.6)", color: "rgba(250,248,245,0.85)" }}
+            >
+              Add session to calendar
+              <span className="transition-transform duration-300 group-hover:translate-x-1">›</span>
+            </a>
+            {joinVisible && (
+              <a
+                href={MEET_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-between gap-8 border px-6 py-3.5 text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300"
+                style={{ borderColor: "#C8A86B", color: "#C8A86B", backgroundColor: "rgba(200,168,107,0.1)" }}
               >
-                <span
-                  className="w-28 shrink-0 font-display text-lg font-light"
-                  style={{ color: "#C8A86B" }}
-                >
-                  {item.time}
-                </span>
-                <span className="flex-1 text-base font-light text-white">
-                  {item.title}
-                </span>
-                <span
-                  className="text-[0.7rem] font-medium tracking-[0.14em]"
-                  style={{ color: "rgba(250,248,245,0.4)" }}
-                >
-                  {item.duration.toUpperCase()}
-                </span>
-              </div>
-            ))}
-            <div
-              className="border-t"
-              style={{ borderColor: "rgba(250,248,245,0.12)" }}
-            />
+                Join the class
+                <span className="transition-transform duration-300 group-hover:translate-x-1">›</span>
+              </a>
+            )}
           </div>
         </div>
       </section>
@@ -230,15 +188,27 @@ export default function YogaDayPage() {
           </div>
           <div className="flex shrink-0 flex-col gap-3">
             <a
-              href={`https://youtube.com/watch?v=${YOUTUBE_VIDEO_ID}`}
+              href={CALENDAR_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-between gap-8 border px-6 py-4 text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300 hover:bg-forest hover:!text-white"
               style={{ borderColor: "#2F4F46", color: "#2F4F46" }}
             >
-              Watch live on YouTube
+              Add session to calendar
               <span className="transition-transform duration-300 group-hover:translate-x-1">›</span>
             </a>
+            {joinVisible && (
+              <a
+                href={MEET_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-between gap-8 border px-6 py-4 text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300 hover:bg-[#C8A86B] hover:border-[#C8A86B] hover:!text-white"
+                style={{ borderColor: "#C8A86B", color: "#C8A86B" }}
+              >
+                Join the class
+                <span className="transition-transform duration-300 group-hover:translate-x-1">›</span>
+              </a>
+            )}
             <TransitionLink
               href="/contact"
               className="group inline-flex items-center justify-between gap-8 border px-6 py-4 text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300 hover:opacity-70"

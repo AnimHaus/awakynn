@@ -6,7 +6,7 @@ import InstructorSection from "./components/InstructorSection";
 const HorizontalJourney = dynamic(() => import("./components/HorizontalJourney"));
 const WellnessPathway = dynamic(() => import("./components/WellnessPathway"));
 const OfferingsGallery = dynamic(() => import("./components/OfferingsGallery"));
-const JournalSection = dynamic(() => import("./components/JournalSection"));
+const Testimonials = dynamic(() => import("./components/Testimonials"));
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
       <HorizontalJourney />
       <BrandCards />
       <WellnessPathway />
-      <JournalSection />
+      <Testimonials />
     </main>
   );
 }

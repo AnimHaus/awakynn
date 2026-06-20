@@ -15,6 +15,7 @@ export type Brand = {
   textOn: "light" | "dark";
   hero: string;
   href: string;
+  comingSoon?: boolean;
 };
 
 export const brands: Brand[] = [
@@ -28,7 +29,7 @@ export const brands: Brand[] = [
       "Nourishment that aligns with your wellness journey. Clean, conscious food crafted for bodies that are waking up.",
     preview: "Wholesome meals and snacks rooted in Ayurvedic nutrition principles.",
     textOn: "dark",
-    hero: "https://cdn.awakynn.com/grabfabs.avif",
+    hero: "https://cdn.awakynn.com/grabfabs.png",
     href: "https://grabfabs.com",
   },
   {
@@ -43,6 +44,7 @@ export const brands: Brand[] = [
     textOn: "dark",
     hero: "https://cdn.awakynn.com/festiq.avif",
     href: "https://festiq.com",
+    comingSoon: true,
   },
   {
     id: "estra",
@@ -56,6 +58,7 @@ export const brands: Brand[] = [
     textOn: "dark",
     hero: "https://cdn.awakynn.com/estra_ritual.avif",
     href: "https://estraritual.com",
+    comingSoon: true,
   },
 ];
 
@@ -131,12 +134,12 @@ export const pathway = [
 /* ─── Offerings gallery ────────────────────────────────────────── */
 export const offerings = [
   {
-    name: "Yoga — Asana & Pranayama",
+    name: "Sunday Workshop",
     house: "AWAKYNN",
-    note: "Movement & Breath",
-    price: "₹1,200/mo",
-    depth: 0,
-    image: "https://cdn.awakynn.com/offer_yoga.avif",
+    note: "Community Practice",
+    price: "₹49",
+    depth: 1,
+    image: "https://cdn.awakynn.com/offer_workshop.avif",
   },
   {
     name: "Breathing & Meditation",
@@ -163,12 +166,12 @@ export const offerings = [
     image: "https://cdn.awakynn.com/offer_one_on_one.avif",
   },
   {
-    name: "Sunday Workshop",
+    name: "Yoga — Asana & Pranayama",
     house: "AWAKYNN",
-    note: "Community Practice",
-    price: "₹49",
+    note: "Movement & Breath",
+    price: "₹1,200/mo",
     depth: 1,
-    image: "https://cdn.awakynn.com/offer_workshop.avif",
+    image: "https://cdn.awakynn.com/offer_yoga.avif",
   },
   {
     name: "Morning Ritual Bundle",

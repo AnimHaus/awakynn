@@ -3,7 +3,7 @@ import { brands, type Brand } from "../lib/data";
 const rotationClasses = [
   "[transform:rotate(-2.5deg)] hover:[transform:scale(1.03)_rotate(0deg)]",
   "[transform:rotate(1.8deg)] hover:[transform:scale(1.03)_rotate(0deg)]",
-  "[transform:rotate(2.2deg)] hover:[transform:scale(1.03)_rotate(0deg)]",
+  "[transform:rotate(-2.2deg)] hover:[transform:scale(1.03)_rotate(0deg)]",
 ];
 
 export default function BrandCards() {
@@ -43,7 +43,7 @@ function Card({ brand, index }: { brand: Brand; index: number }) {
   return (
     <article
       style={{ color: "#FAF8F5" }}
-      className={`grain group relative aspect-[3/4] cursor-pointer overflow-hidden rounded-[1.8rem] border border-charcoal/5 p-7 shadow-[0_40px_80px_-40px_rgba(34,34,34,0.45)] transition-[transform] duration-700 md:p-9 ${rotCls}`}
+      className={`grain group relative aspect-[3/4] overflow-hidden rounded-[1.8rem] border border-charcoal/5 p-7 shadow-[0_40px_80px_-40px_rgba(34,34,34,0.45)] transition-[transform,opacity] duration-700 md:p-9 ${brand.comingSoon ? "grayscale opacity-75 hover:opacity-85 cursor-default" : "cursor-pointer"} ${rotCls}`}
     >
       {/* House imagery */}
       <img
@@ -55,20 +55,38 @@ function Card({ brand, index }: { brand: Brand; index: number }) {
       {/* Scrim */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-      <a
-        href={brand.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute inset-0 z-10"
-        aria-label={`Visit ${brand.name}`}
-      />
+      {/* Coming soon hover overlay */}
+      {brand.comingSoon && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <span className="font-display text-3xl font-light tracking-[0.25em] text-white uppercase">
+            Coming Soon
+          </span>
+        </div>
+      )}
+
+      {!brand.comingSoon && (
+        <a
+          href={brand.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute inset-0 z-10"
+          aria-label={`Visit ${brand.name}`}
+        />
+      )}
 
       <div className="relative z-10 flex h-full flex-col justify-between pointer-events-none">
         <div className="flex items-start justify-between">
           <span className="eyebrow opacity-70">{`0${index + 1}`}</span>
-          <span className="rounded-full border border-white/25 px-3 py-1 text-[0.62rem] font-medium tracking-[0.18em] opacity-80">
-            {brand.tagline.toUpperCase()}
-          </span>
+          <div className="flex flex-col items-end gap-2">
+            <span className="rounded-full border border-white/25 px-3 py-1 text-[0.62rem] font-medium tracking-[0.18em] opacity-80">
+              {brand.tagline.toUpperCase()}
+            </span>
+            {brand.comingSoon && (
+              <span className="rounded-full bg-white px-4 py-1.5 text-[0.62rem] font-semibold tracking-[0.2em] text-black shadow-md">
+                COMING SOON
+              </span>
+            )}
+          </div>
         </div>
 
         <div>
@@ -81,12 +99,18 @@ function Card({ brand, index }: { brand: Brand; index: number }) {
           <p className="mt-4 max-w-[26ch] text-sm leading-relaxed opacity-80">
             {brand.description}
           </p>
-          <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium">
-            Discover the house
-            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
-              →
+          {brand.comingSoon ? (
+            <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium opacity-50">
+              Coming soon
             </span>
-          </span>
+          ) : (
+            <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium">
+              Discover the house
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </span>
+          )}
         </div>
       </div>
     </article>

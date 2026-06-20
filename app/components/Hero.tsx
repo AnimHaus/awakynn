@@ -6,20 +6,22 @@ import TransitionLink from "./TransitionLink";
 
 const SLIDES = [
   {
-    img: "https://cdn.awakynn.com/about_bg.avif",
-    caption: "Your practice, your pace.",
-  },
-  {
     img: "https://cdn.awakynn.com/offer_yoga.avif",
     caption: "Asana & breath, woven as one.",
+    objectPosition: "center 30%",
   },
   {
-    img: "https://cdn.awakynn.com/offer_meditation.avif",
+    img: "https://cdn.awakynn.com/hero3.jpeg",
+    caption: "Nourishment rooted in Ayurveda.",
+  },
+  {
+    img: "https://cdn.awakynn.com/hero2.jpeg",
     caption: "Stillness as the deepest practice.",
   },
   {
-    img: "https://cdn.awakynn.com/offer_diet.avif",
-    caption: "Nourishment rooted in Ayurveda.",
+    img: "https://cdn.awakynn.com/hero1.jpeg",
+    caption: "Your practice, your pace.",
+    objectPosition: "center 10%",
   },
 ];
 
@@ -80,7 +82,7 @@ export default function Hero() {
           src={s.img}
           alt=""
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
-          style={{ opacity: i === activeSlide ? 0.78 : 0 }}
+          style={{ opacity: i === activeSlide ? 0.78 : 0, objectPosition: s.objectPosition ?? "center" }}
         />
       ))}
 
@@ -123,10 +125,10 @@ export default function Hero() {
             {/* CTA buttons — stack on mobile, side-by-side on sm+ */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
               <TransitionLink
-                href="/timetable"
+                href="/classes"
                 className="group flex items-center justify-between gap-6 sm:gap-8 px-5 sm:px-6 py-3.5 sm:py-4 border border-white/80 text-white text-xs font-medium tracking-[0.2em] uppercase transition-all duration-300 hover:bg-white hover:text-black"
               >
-                View Timetable
+                View Classes
                 <span className="transition-transform duration-300 group-hover:translate-x-1">›</span>
               </TransitionLink>
               <a
@@ -140,11 +142,11 @@ export default function Hero() {
 
             {/* Mobile slide progress dots */}
             <div className="flex items-center gap-2 md:hidden">
-              {SLIDES.map((_, i) => (
+              {SLIDES.map((s, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveSlide(i)}
-                  aria-label={`Slide ${i + 1}`}
+                  aria-label={s.caption}
                   className="focus:outline-none"
                 >
                   <span
@@ -176,7 +178,7 @@ export default function Hero() {
                     src={s.img}
                     alt={s.caption}
                     className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-                    style={{ opacity: i === activeSlide ? 1 : 0 }}
+                    style={{ opacity: i === activeSlide ? 1 : 0, objectPosition: s.objectPosition ?? "center" }}
                   />
                 ))}
               </div>
