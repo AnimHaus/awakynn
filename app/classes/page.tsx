@@ -4,15 +4,32 @@ import ClassSessionList, { type ClassSession } from "./ClassSessionList";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
 
 export const metadata: Metadata = {
-  title: "Live Classes",
+  title: "Live Yoga & Meditation Class Schedule",
   description:
-    "Browse scheduled Awakynn yoga, meditation, and breathwork classes. Join live via Google Meet — no experience required.",
+    "Browse and join Awakynn's scheduled live yoga, meditation, pranayama, and breathwork classes on Google Meet. New sessions added weekly — open to all ages and experience levels.",
+  keywords: [
+    "live yoga classes schedule",
+    "online yoga timetable",
+    "yoga Google Meet India",
+    "meditation schedule online",
+    "pranayama classes India",
+    "beginner yoga online",
+    "yoga for seniors schedule",
+    "Awakynn class schedule",
+  ],
   alternates: { canonical: "https://awakynn.com/classes" },
   openGraph: {
-    title: "Awakynn Live Classes",
+    title: "Live Yoga & Meditation Schedule – Awakynn",
     description:
-      "Scheduled yoga, meditation, pranayama, and breathing classes on Google Meet. Open to all levels.",
+      "Scheduled live yoga, meditation, pranayama, and breathwork classes via Google Meet. New sessions weekly — all levels welcome.",
     url: "https://awakynn.com/classes",
+    images: [{ url: "https://awakynn.com/og.jpg", width: 1200, height: 630, alt: "Awakynn Live Classes" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Live Yoga & Meditation Schedule – Awakynn",
+    description: "Scheduled live yoga, meditation and breathwork classes on Google Meet. All levels welcome.",
+    images: ["https://awakynn.com/og.jpg"],
   },
 };
 

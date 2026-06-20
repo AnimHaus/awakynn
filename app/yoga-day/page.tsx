@@ -6,24 +6,35 @@ import ConditionalJoinButton from "./ConditionalJoinButton";
 const CALENDAR_LINK = "https://calendar.app.google/8rXdcDLtCQ9SP5Rq9";
 
 export const metadata: Metadata = {
-  title: "International Yoga Day 2026 \u2013 Free Open Workshop",
+  title: "International Yoga Day 2026 – Free Live Workshop",
   description:
-    "Join Awakynn\u2019s free International Yoga Day workshop on 21 June 2026 \u2014 live on Google Meet. Open to all ages and levels. Sun Salutations, pranayama, mantra chanting, and more.",
-  alternates: { canonical: "https://awakynn.com/yoga-day" },
-  openGraph: {
-    title: "International Yoga Day 2026 \u2013 Free Open Workshop by Awakynn",
-    description:
-      "Free live yoga workshop on 21 June 2026. Sun Salutations, pranayama, mantra chanting & meditation. Join on Google Meet.",
-    url: "https://awakynn.com/yoga-day",
-  },
+    "Join Awakynn's free International Yoga Day open workshop on 21 June 2026, live on Google Meet. Sun Salutations, pranayama, mantra chanting, and meditation — open to absolute beginners and seasoned practitioners alike.",
   keywords: [
     "International Yoga Day 2026",
-    "free yoga workshop",
-    "yoga day live stream",
-    "21 June yoga",
+    "free yoga workshop online",
+    "yoga day live stream India",
+    "21 June yoga workshop",
     "online yoga workshop India",
-    "Awakynn yoga day",
+    "free yoga class June 2026",
+    "Awakynn yoga day event",
+    "yoga for beginners free workshop",
+    "Sun Salutation workshop",
+    "pranayama workshop online",
   ],
+  alternates: { canonical: "https://awakynn.com/yoga-day" },
+  openGraph: {
+    title: "International Yoga Day 2026 – Free Live Workshop by Awakynn",
+    description:
+      "Free live yoga workshop on 21 June 2026 via Google Meet. Sun Salutations, pranayama, mantra chanting & meditation. Open to all — no registration required.",
+    url: "https://awakynn.com/yoga-day",
+    images: [{ url: "https://awakynn.com/og-yoga-day.jpg", width: 1200, height: 630, alt: "International Yoga Day 2026 – Awakynn Free Workshop" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "International Yoga Day 2026 – Free Live Workshop by Awakynn",
+    description: "Free live yoga on 21 June 2026 via Google Meet. Pranayama, Sun Salutations, mantra & meditation. Open to all.",
+    images: ["https://awakynn.com/og-yoga-day.jpg"],
+  },
 };
 
 export default function YogaDayPage() {

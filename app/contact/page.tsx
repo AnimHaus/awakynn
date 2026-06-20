@@ -22,15 +22,31 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact & Book a Session",
   description:
-    "Get in touch with Awakynn — ask about yoga classes, private sessions, Ayurvedic consulting, or share your wellness story.",
+    "Reach out to Awakynn to book a yoga class, enquire about private 1-on-1 sessions, Ayurvedic diet consulting, or meditation programs. We respond within 24 hours.",
+  keywords: [
+    "book yoga class online",
+    "private yoga session India",
+    "contact Awakynn",
+    "Ayurvedic consulting enquiry",
+    "1-on-1 yoga booking",
+    "yoga teacher contact India",
+    "online wellness consultation",
+  ],
   alternates: { canonical: "https://awakynn.com/contact" },
   openGraph: {
-    title: "Contact Awakynn",
+    title: "Contact & Book a Session – Awakynn",
     description:
-      "Reach out about yoga classes, private sessions, Ayurvedic diet consulting, meditation, and more.",
+      "Book yoga classes, private 1-on-1 sessions, Ayurvedic diet consulting, or meditation programs. We respond within 24 hours.",
     url: "https://awakynn.com/contact",
+    images: [{ url: "https://awakynn.com/og.jpg", width: 1200, height: 630, alt: "Contact Awakynn" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact & Book a Session – Awakynn",
+    description: "Book yoga, meditation, and Ayurvedic consulting sessions. We respond within 24 hours.",
+    images: ["https://awakynn.com/og.jpg"],
   },
 };
 
