@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 
-const EVENT_DATE = new Date("2026-06-21T04:30:00.000Z");
-const CLASS_END  = new Date("2026-06-22T01:30:00.000Z");
+const EVENT_DATE = new Date("2026-06-21T01:30:00.000Z"); // 7:00 AM IST
+const CLASS_END  = new Date("2026-06-21T02:30:00.000Z"); // 8:00 AM IST
 const MEET_LINK  = "https://meet.google.com/qba-iprk-bqn";
-
 // Checks once on mount whether we're inside the live window.
 // No interval needed — the button appearance doesn't need to update per-second.
 export default function ConditionalJoinButton({

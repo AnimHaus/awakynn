@@ -76,7 +76,7 @@ export default function YogaDayPage() {
           </h1>
           <p className="max-w-5xl text-base leading-relaxed" style={{ color: "rgba(250,248,245,0.65)" }}>
             Free workshop for all wanting to start their journey of yoga or wanting to practice
-            yoga every day \u2014 join hands with AWAKYNN, and awaken your inner self. Beginner
+            yoga every day - join hands with AWAKYNN, and awaken your inner self. Beginner
             friendly: 45 minutes of yoga practice, interactions with your yog guru, simple daily
             practices, mantra chanting, pranayama.
           </p>

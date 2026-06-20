@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-const EVENT_DATE = new Date("2026-06-21T01:30:00.000Z"); // 10:00 AM IST
-const CLASS_END  = new Date("2026-06-21T02:30:00.000Z");
+const EVENT_DATE = new Date("2026-06-21T01:30:00.000Z"); // 7:00 AM IST
+const CLASS_END  = new Date("2026-06-21T02:30:00.000Z"); // 8:00 AM IST
 
 const CALENDAR_LINK = "https://calendar.app.google/8rXdcDLtCQ9SP5Rq9";
 const MEET_LINK     = "https://meet.google.com/qba-iprk-bqn";

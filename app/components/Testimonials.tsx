@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Testimonial = {
@@ -13,13 +13,15 @@ type Testimonial = {
   lang: string;
 };
 
-const testimonials: Testimonial[] = [
+// Hardcoded entries shown when no approved DB submissions exist,
+// or appended after DB entries so there are always enough cards.
+const FALLBACK_TESTIMONIALS: Testimonial[] = [
   {
     id: "mausumi",
     name: "Mausumi Baral",
     age: 56,
     image: "https://cdn.awakynn.com/testimonial_mausumi_baral.avif",
-    text: "My name is Mausumi Baral, age 56 years. I have arthritis knee problem. A year back I wasn't able to climb stairs or even getting onto a bike without any support — now I can confidently do it all. Yet with age sometimes my knees pain, but every time I practice yoga it gets better and the pain reduces drastically. Thank you Monalisa, she is really very kind and sweet.",
+    text: "My name is Mausumi Baral, age 56 years. I have arthritis knee problem. A year back I wasn't able to climb stairs or even getting onto a bike without any support \u2014 now I can confidently do it all. Yet with age sometimes my knees pain, but every time I practice yoga it gets better and the pain reduces drastically. Thank you Monalisa, she is really very kind and sweet.",
     lang: "en",
   },
   {
@@ -35,7 +37,7 @@ const testimonials: Testimonial[] = [
     name: "Dolly",
     age: 76,
     image: "https://cdn.awakynn.com/testimonial_dolly.avif",
-    text: "Hello, my name is Dolly and I am 76 years old. I have been practising yoga with Monalisa for more than a year. I used to suffer from chronic muscle cramps every night, and honestly after doing yoga under her guidance I am at ease — now I can sleep every night without any difficulty.",
+    text: "Hello, my name is Dolly and I am 76 years old. I have been practising yoga with Monalisa for more than a year. I used to suffer from chronic muscle cramps every night, and honestly after doing yoga under her guidance I am at ease \u2014 now I can sleep every night without any difficulty.",
     lang: "en",
   },
   {
@@ -43,7 +45,7 @@ const testimonials: Testimonial[] = [
     name: "Ranjan",
     age: 80,
     image: "https://cdn.awakynn.com/testimonial_ranjan.avif",
-    text: "Everyone, I am Ranjan, 80 years old. I have been a student of Monalisa, and being a part of Awakynn's community has been the best part at this age. I feel happy and healthy — like I am just 20. What I like about our teacher is the amount of patience and care she gives to us during each class. Thank you.",
+    text: "Everyone, I am Ranjan, 80 years old. I have been a student of Monalisa, and being a part of Awakynn\u2019s community has been the best part at this age. I feel happy and healthy \u2014 like I am just 20. What I like about our teacher is the amount of patience and care she gives to us during each class. Thank you.",
     lang: "en",
   },
   {
@@ -52,10 +54,18 @@ const testimonials: Testimonial[] = [
     age: null,
     note: "Neha's Mom",
     image: "https://cdn.awakynn.com/hero1.avif",
-    text: "Hi everyone, I am Neha's Mom Santana Dey. My daughter is special, and would frequently get indigestion issues, and was extremely shy — she would never speak in public. I always want her to shine and be her best. Every doctor I visited suggested she needs yoga, so I joined her in Monalisa's class on a friend's recommendation. That day to this day I cannot explain how happy I am. Her indigestion issues have become very less, and what I never expected — she is now expressing herself so confidently in public. I had no idea about the mental exercises and guided public speaking practice woven into the yogasana. Thank you so much.",
+    text: "Hi everyone, I am Neha\u2019s Mom Santana Dey. My daughter is special, and would frequently get indigestion issues, and was extremely shy \u2014 she would never speak in public. I always want her to shine and be her best. Every doctor I visited suggested she needs yoga, so I joined her in Monalisa\u2019s class on a friend\u2019s recommendation. That day to this day I cannot explain how happy I am. Her indigestion issues have become very less, and what I never expected \u2014 she is now expressing herself so confidently in public. I had no idea about the mental exercises and guided public speaking practice woven into the yogasana. Thank you so much.",
     lang: "en",
   },
 ];
+
+type ServerTestimonial = {
+  id: string;
+  name: string;
+  age: number | null;
+  note: string;
+  message: string;
+};
 
 function Avatar({ t, size }: { t: Testimonial; size: "sm" | "lg" }) {
   const dim = size === "lg" ? 56 : 40;
@@ -77,15 +87,26 @@ function Avatar({ t, size }: { t: Testimonial; size: "sm" | "lg" }) {
   );
 }
 
-export default function Testimonials() {
-  const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
+export default function Testimonials({
+  serverTestimonials = [],
+}: {
+  serverTestimonials?: ServerTestimonial[];
+}) {
+  // Server-approved entries come first; fallbacks fill any names not already present.
+  const fromServer: Testimonial[] = serverTestimonials.map((t) => ({
+    id: t.id,
+    name: t.name,
+    age: t.age,
+    note: t.note || undefined,
+    image: null,
+    text: t.message,
+    lang: "en",
+  }));
+  const serverNames = new Set(fromServer.map((t) => t.name.toLowerCase()));
+  const extra = FALLBACK_TESTIMONIALS.filter((t) => !serverNames.has(t.name.toLowerCase()));
+  const testimonials = fromServer.length > 0 ? [...fromServer, ...extra] : FALLBACK_TESTIMONIALS;
 
-  useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => setCurrent((c) => (c + 1) % testimonials.length), 6000);
-    return () => clearInterval(id);
-  }, [paused]);
+  const [current, setCurrent] = useState(0);
 
   const active = testimonials[current];
   const others = testimonials.filter((_, i) => i !== current);
@@ -105,7 +126,7 @@ export default function Testimonials() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5 lg:items-start">
 
-          {/* ── Main featured card ── */}
+          {/* Main featured card */}
           <div className="lg:col-span-3">
             <AnimatePresence mode="wait">
               <motion.div
@@ -115,8 +136,6 @@ export default function Testimonials() {
                 exit={{ opacity: 0, x: -32 }}
                 transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 className="relative overflow-hidden border border-charcoal/8 bg-white p-8 md:p-12"
-                onMouseEnter={() => setPaused(true)}
-                onMouseLeave={() => setPaused(false)}
               >
                 {/* Decorative quote */}
                 <div
@@ -124,7 +143,7 @@ export default function Testimonials() {
                   style={{ color: "rgba(200,168,107,0.1)" }}
                   aria-hidden
                 >
-                  "
+                  &ldquo;
                 </div>
 
                 {/* Image space */}
@@ -153,7 +172,7 @@ export default function Testimonials() {
                   lang={active.lang}
                   style={{ color: "rgba(34,34,34,0.75)" }}
                 >
-                  "{active.text}"
+                  &ldquo;{active.text}&rdquo;
                 </blockquote>
 
                 {/* Attribution */}
@@ -195,7 +214,7 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* ── Sidebar stack ── */}
+          {/* Sidebar stack */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             {others.map((t, i) => (
               <motion.div
@@ -206,7 +225,6 @@ export default function Testimonials() {
                 onClick={() => setCurrent(testimonials.indexOf(t))}
                 className="cursor-pointer border border-charcoal/8 bg-white p-6 transition-all duration-300 hover:border-gold/40 hover:shadow-[0_12px_36px_-12px_rgba(47,79,70,0.14)]"
               >
-                {/* Mini avatar + name */}
                 <div className="mb-3 flex items-center gap-3">
                   <Avatar t={t} size="sm" />
                   <div>

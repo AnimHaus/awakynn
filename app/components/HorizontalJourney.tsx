@@ -8,10 +8,12 @@ export default function HorizontalJourney() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref });
 
+  // Extra 100 vh of dwell on the last (3rd) chapter before the section ends.
+  // Keyframes: 0→½ scroll to ch2, ½→¾ scroll to ch3, ¾→1 ch3 stays put.
   const x = useTransform(
     scrollYProgress,
-    [0, 1],
-    ["0vw", `-${(chapters.length - 1) * 100}vw`]
+    [0, 0.5, 0.75, 1],
+    ["0vw", "-100vw", "-200vw", "-200vw"]
   );
 
   return (
@@ -26,7 +28,7 @@ export default function HorizontalJourney() {
       {/* Desktop: horizontal sticky scroll */}
       <section
         ref={ref}
-        style={{ height: `${chapters.length * 100}vh` }}
+        style={{ height: `${(chapters.length + 1) * 100}vh` }}
         className="relative hidden md:block"
       >
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">

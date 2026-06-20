@@ -9,6 +9,16 @@ const WellnessPathway = dynamic(() => import("./components/WellnessPathway"));
 const OfferingsGallery = dynamic(() => import("./components/OfferingsGallery"));
 const Testimonials = dynamic(() => import("./components/Testimonials"));
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
+
+type ApprovedTestimonial = {
+  id: string;
+  name: string;
+  age: number | null;
+  note: string;
+  message: string;
+};
+
 export const metadata: Metadata = {
   title: "Awakynn – Yoga, Meditation & Ayurvedic Wellness",
   description:
@@ -45,7 +55,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  let approvedTestimonials: ApprovedTestimonial[] = [];
+  try {
+    const res = await fetch(`${API_BASE}/contact/testimonials/approved`, {
+      next: { revalidate: 300 },
+    });
+    if (res.ok) approvedTestimonials = await res.json();
+  } catch {
+    // silently fall back to hardcoded testimonials
+  }
+
   return (
     <main>
       <Hero />
@@ -54,7 +74,7 @@ export default function Home() {
       <HorizontalJourney />
       <BrandCards />
       <WellnessPathway />
-      <Testimonials />
+      <Testimonials serverTestimonials={approvedTestimonials} />
     </main>
   );
 }
