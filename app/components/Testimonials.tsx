@@ -79,11 +79,13 @@ function Avatar({ t, size }: { t: Testimonial; size: "sm" | "lg" }) {
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => setCurrent((c) => (c + 1) % testimonials.length), 6000);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
 
   const active = testimonials[current];
   const others = testimonials.filter((_, i) => i !== current);
@@ -113,6 +115,8 @@ export default function Testimonials() {
                 exit={{ opacity: 0, x: -32 }}
                 transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 className="relative overflow-hidden border border-charcoal/8 bg-white p-8 md:p-12"
+                onMouseEnter={() => setPaused(true)}
+                onMouseLeave={() => setPaused(false)}
               >
                 {/* Decorative quote */}
                 <div

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { offerings } from "../lib/data";
 
@@ -22,6 +22,7 @@ export default function OfferingsGallery() {
     target: ref,
     offset: ["start end", "end start"],
   });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <section
@@ -29,12 +30,6 @@ export default function OfferingsGallery() {
       ref={ref}
       className="relative bg-background py-32 md:min-h-[160vh]"
     >
-      {/* Centered editorial framing text behind cards */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <h2 className="font-display max-w-[18ch] text-center text-[12vw] font-light leading-[0.85] text-forest/8 md:text-[9rem]">
-          The Art of Practice
-        </h2>
-      </div>
 
       <div className="relative z-10 mx-auto mb-16 max-w-[1500px] px-6 md:px-10">
         <p className="font-display mt-4 max-w-xl text-3xl font-light leading-tight text-forest md:text-4xl">
@@ -43,7 +38,7 @@ export default function OfferingsGallery() {
       </div>
 
       {/* Mobile: 2-col grid */}
-      <div className="md:hidden grid grid-cols-2 gap-4 px-6 pb-8">
+      <div className="md:hidden grid grid-cols-2 gap-4 px-6 pb-8 [&:has(*:hover)>*:not(:hover)]:opacity-40 [&:has(*:hover)>*:not(:hover)]:blur-[2px] [&:has(*:hover)>*:not(:hover)]:scale-[0.97] [&>*]:transition-[opacity,filter,transform] [&>*]:duration-400">
         {offerings.map((item, i) => (
           <div key={item.name} className="relative aspect-[3/4] overflow-hidden rounded-xl" style={{ background: tile(i) }}>
             <img src={item.image} alt={item.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
@@ -67,6 +62,8 @@ export default function OfferingsGallery() {
             offering={item}
             index={i}
             progress={scrollYProgress}
+            dimmed={hoveredIndex !== null && hoveredIndex !== i}
+            onHover={(v) => setHoveredIndex(v ? i : null)}
           />
         ))}
       </div>
@@ -78,10 +75,14 @@ function FloatingOffering({
   offering,
   index,
   progress,
+  dimmed,
+  onHover,
 }: {
   offering: (typeof offerings)[number];
   index: number;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  dimmed: boolean;
+  onHover: (hovered: boolean) => void;
 }) {
   const depth = offering.depth;
   const depthScale = 0.82 + depth * 0.12;
@@ -92,18 +93,24 @@ function FloatingOffering({
     <motion.div
       style={{
         y: yShift,
-        zIndex: 10 + depth,
+        zIndex: dimmed ? 5 : 10 + depth,
         scale: depthScale,
-        filter: depth === 0 ? "blur(0.4px)" : "none",
+        filter: dimmed
+          ? "blur(2px) brightness(0.85)"
+          : depth === 0 ? "blur(0.4px)" : "none",
+        opacity: dimmed ? 0.35 : 1,
+        transition: "opacity 0.4s ease, filter 0.4s ease",
       }}
       className={`group absolute ${placement[index]}`}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
     >
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-10%" }}
         transition={{ duration: 1, ease, delay: index * 0.08 }}
-        whileHover={{ scale: 1.05, rotate: index % 2 ? 1.5 : -1.5 }}
+        whileHover={{ scale: 1.05 }}
         className="cursor-pointer"
       >
         {/* Offering image */}

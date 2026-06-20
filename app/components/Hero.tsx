@@ -11,15 +11,15 @@ const SLIDES = [
     objectPosition: "center 30%",
   },
   {
-    img: "https://cdn.awakynn.com/hero3.jpeg",
+    img: "https://cdn.awakynn.com/hero3.avif",
     caption: "Nourishment rooted in Ayurveda.",
   },
   {
-    img: "https://cdn.awakynn.com/hero2.jpeg",
+    img: "https://cdn.awakynn.com/hero2.avif",
     caption: "Stillness as the deepest practice.",
   },
   {
-    img: "https://cdn.awakynn.com/hero1.jpeg",
+    img: "https://cdn.awakynn.com/hero1.avif",
     caption: "Your practice, your pace.",
     objectPosition: "center 10%",
   },

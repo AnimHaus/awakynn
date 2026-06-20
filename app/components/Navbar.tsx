@@ -91,7 +91,7 @@ export default function Navbar() {
               el.style.color = navTextColor;
             }}
           >
-            Book a Session
+            Share your story
           </TransitionLink>
         </div>
 
@@ -170,7 +170,7 @@ export default function Navbar() {
             style={{ borderColor: "var(--st)", color: "var(--st)" }}
             onClick={() => setOpen(false)}
           >
-            Book a Session <span>›</span>
+            Share your story <span>›</span>
           </TransitionLink>
         </div>
       </div>
