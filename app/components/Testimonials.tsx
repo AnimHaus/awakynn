@@ -51,7 +51,7 @@ const testimonials: Testimonial[] = [
     name: "Santana Dey",
     age: null,
     note: "Neha's Mom",
-    image: "https://cdn.awakynn.com/hero1.jpeg",
+    image: "https://cdn.awakynn.com/hero1.avif",
     text: "Hi everyone, I am Neha's Mom Santana Dey. My daughter is special, and would frequently get indigestion issues, and was extremely shy — she would never speak in public. I always want her to shine and be her best. Every doctor I visited suggested she needs yoga, so I joined her in Monalisa's class on a friend's recommendation. That day to this day I cannot explain how happy I am. Her indigestion issues have become very less, and what I never expected — she is now expressing herself so confidently in public. I had no idea about the mental exercises and guided public speaking practice woven into the yogasana. Thank you so much.",
     lang: "en",
   },
