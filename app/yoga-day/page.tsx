@@ -48,7 +48,7 @@ export default function YogaDayPage() {
       >
         {/* Background image */}
         <img
-          src="https://cdn.awakynn.com/hero3.jpeg"
+          src="https://cdn.awakynn.com/hero3.avif"
           alt=""
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover object-center"
