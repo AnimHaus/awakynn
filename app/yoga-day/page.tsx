@@ -52,6 +52,14 @@ export default function YogaDayPage() {
         className="grain relative flex min-h-[100vh] flex-col items-center justify-center overflow-hidden px-6 py-32 text-center"
         style={{ backgroundColor: "#2F4F46" }}
       >
+        {/* Background image */}
+        <img
+          src="https://cdn.awakynn.com/hero3.jpeg"
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          style={{ opacity: 0.22 }}
+        />
         <div
           className="pointer-events-none absolute inset-0 flex items-center justify-center"
           aria-hidden
@@ -76,18 +84,14 @@ export default function YogaDayPage() {
             className="font-display max-w-3xl text-5xl font-light leading-[0.95] text-white md:text-8xl"
           >
             Open Workshop
-            <br />
-            <span className="italic" style={{ color: "#C8A86B" }}>
-              &amp; Live Stream
-            </span>
           </h1>
 
           <p
-            className="max-w-md text-base leading-relaxed"
+            className="max-w-5xl text-base leading-relaxed"
             style={{ color: "rgba(250,248,245,0.65)" }}
           >
-            A free, open-to-all celebration of yoga — join us in person or watch
-            live on YouTube. No experience required.
+            Free workshop for all wanting to start there journey of yoga or wanting to practice yoga like every day , join hands with AWAKYNN , and awake your inner self to every day to the best you.
+            This is a beginner friendly workshop, 45 minutes of yoga practice, with interactions of participants with your yog guru , simple and effective daily practices, mantra chanting, pranayama.
           </p>
 
           {/* Countdown / Live indicator */}

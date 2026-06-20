@@ -94,9 +94,6 @@ export default function Testimonials() {
 
         {/* Header */}
         <div className="mb-16">
-          <p className="text-[0.65rem] font-medium tracking-[0.3em] uppercase" style={{ color: "#C8A86B" }}>
-            Student stories
-          </p>
           <h2 className="font-display mt-3 max-w-2xl text-5xl font-light leading-[0.95] text-forest md:text-7xl">
             Lives that
             <br />
