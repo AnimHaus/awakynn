@@ -20,9 +20,9 @@ type ApprovedTestimonial = {
 };
 
 export const metadata: Metadata = {
-  title: "Awakynn – Yoga, Meditation & Ayurvedic Wellness",
+  title: "Yoga Classes in Kolkata, Hooghly & Online | Awakynn",
   description:
-    "Awakynn offers online and in-person yoga classes, guided meditation, pranayama, Ayurvedic diet consulting, mantra chanting, and 1-on-1 mental clarity sessions — for all ages, all levels, with certified instructors.",
+    "Join online and offline yoga, meditation and Ayurvedic wellness sessions across Kolkata, Hooghly, Chinsurah, Chandannagar and surrounding areas.",
   keywords: [
     "yoga classes online India",
     "yoga for beginners",
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "https://awakynn.com" },
   openGraph: {
-    title: "Awakynn – Yoga, Meditation & Ayurvedic Wellness",
+    title: "Yoga Classes in Kolkata, Hooghly & Online | Awakynn",
     description:
-      "Online and in-person yoga, meditation, pranayama, Ayurvedic diet consulting, and mental clarity sessions for all ages and levels.",
+      "Join online and offline yoga, meditation and Ayurvedic wellness sessions across Kolkata, Hooghly, Chinsurah, Chandannagar and surrounding areas.",
     url: "https://awakynn.com",
     images: [{ url: "https://awakynn.com/og.jpg", width: 1200, height: 630, alt: "Awakynn – Awaken Within" }],
   },

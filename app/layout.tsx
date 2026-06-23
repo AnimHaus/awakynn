@@ -102,8 +102,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
+      "@type": "HealthAndBeautyBusiness",
       name: "Awakynn",
       url: SITE_URL,
       logo: {
@@ -137,7 +136,24 @@ const jsonLd = {
       priceRange: "₹₹",
       currenciesAccepted: "INR",
       paymentAccepted: "Online payment",
-      areaServed: { "@type": "Country", name: "India" },
+      areaServed: [
+        {
+          "@type": "City",
+          name: "Kolkata",
+        },
+        {
+          "@type": "City",
+          name: "Chinsurah",
+        },
+        {
+          "@type": "City",
+          name: "Chandannagar",
+        },
+        {
+          "@type": "City",
+          name: "Hooghly",
+        },
+      ],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Wellness Offerings",
