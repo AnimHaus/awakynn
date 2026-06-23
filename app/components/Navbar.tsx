@@ -5,10 +5,37 @@ import { usePathname } from "next/navigation";
 import TransitionLink from "./TransitionLink";
 import Image from "next/image";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
+
+type ActiveEvent = {
+  slug: string;
+  title: string;
+  logo_url: string;
+  end_date: string;
+};
+
+function useActiveEvent() {
+  const [event, setEvent] = useState<ActiveEvent | null>(null);
+
+  useEffect(() => {
+    fetch(`${API_BASE}/events/active`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data) return;
+        const ended = new Date(data.end_date) < new Date();
+        if (!ended && data.logo_url) setEvent(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  return event;
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const activeEvent = useActiveEvent();
 
   // Some pages always use the scrolled (dark) appearance regardless of scroll
   const alwaysDark = pathname !== "/" && pathname !== "/yoga-day";
@@ -48,19 +75,23 @@ export default function Navbar() {
               priority
             />
           </TransitionLink>
-          <span className="text-white" style={{ color: navTextColor }}>|</span>
-          <TransitionLink
-            href="/yoga-day"
-            className="flex flex-col items-center gap-0.5 transition-opacity duration-300 hover:opacity-60"
-          >
-            <Image
-              src="https://cdn.awakynn.com/international-yoga-day-logo.png"
-              alt="International Yoga Day"
-              width={90}
-              height={36}
-              className="h-9 w-auto object-contain"
-            />
-          </TransitionLink>
+          {activeEvent && (
+            <>
+              <span className="text-white" style={{ color: navTextColor }}>|</span>
+              <TransitionLink
+                href={`/${activeEvent.slug}`}
+                className="flex flex-col items-center gap-0.5 transition-opacity duration-300 hover:opacity-60"
+              >
+                <Image
+                  src={activeEvent.logo_url}
+                  alt={activeEvent.title}
+                  width={90}
+                  height={36}
+                  className="h-9 w-auto object-contain"
+                />
+              </TransitionLink>
+            </>
+          )}
 
         </div>
 
@@ -145,25 +176,21 @@ export default function Navbar() {
           >
             Classes
           </TransitionLink>
-          <TransitionLink
-            href="/yoga-day"
-            className="flex flex-col items-start gap-0.5 py-1 transition-opacity hover:opacity-60"
-            onClick={() => setOpen(false)}
-          >
-            <Image
-              src="https://cdn.awakynn.com/international-yoga-day-logo.png"
-              alt="International Yoga Day"
-              width={90}
-              height={36}
-              className="h-9 w-auto object-contain"
-            />
-            <span
-              className="text-[0.6rem] font-medium tracking-[0.2em] uppercase"
-              style={{ color: "var(--st)" }}
+          {activeEvent && (
+            <TransitionLink
+              href={`/${activeEvent.slug}`}
+              className="flex flex-col items-start gap-0.5 py-1 transition-opacity hover:opacity-60"
+              onClick={() => setOpen(false)}
             >
-              Join Us For
-            </span>
-          </TransitionLink>
+              <Image
+                src={activeEvent.logo_url}
+                alt={activeEvent.title}
+                width={90}
+                height={36}
+                className="h-9 w-auto object-contain"
+              />
+            </TransitionLink>
+          )}
           <TransitionLink
             href="/contact"
             className="mt-1 flex items-center justify-between px-5 py-3 border text-xs font-medium tracking-[0.22em] uppercase"

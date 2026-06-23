@@ -6,6 +6,11 @@ const socials = [
   { label: "YouTube", handle: "Awakynn", href: "https://www.youtube.com/@awakynn.yogaofficial" },
 ];
 
+const whatsapp = [
+  { label: "WhatsApp", handle: "+91 91132 93167", href: "https://wa.me/919113293167" },
+  { label: "WhatsApp", handle: "+91 82769 38020", href: "https://wa.me/918276938020" },
+];
+
 const faqs = [
   {
     q: "I'm a complete beginner. Can I join?",
@@ -111,6 +116,46 @@ export default function ContactPage() {
                       </span>
                       <p className="mt-0.5 text-sm font-medium" style={{ color: "#2F4F46" }}>
                         {s.handle}
+                      </p>
+                    </div>
+                    <span
+                      className="text-lg transition-transform duration-300 group-hover:translate-x-1"
+                      style={{ color: "#C8A86B" }}
+                    >
+                      →
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* WhatsApp */}
+            <div>
+              <span
+                className="block text-[0.65rem] font-medium tracking-[0.25em]"
+                style={{ color: "#C8A86B" }}
+              >
+                WHATSAPP
+              </span>
+              <div className="mt-5 flex flex-col gap-3">
+                {whatsapp.map((w) => (
+                  <a
+                    key={w.handle}
+                    href={w.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between border px-5 py-4 transition-all duration-300 hover:border-forest"
+                    style={{ borderColor: "rgba(34,34,34,0.12)" }}
+                  >
+                    <div>
+                      <span
+                        className="text-[0.62rem] tracking-[0.18em]"
+                        style={{ color: "rgba(34,34,34,0.4)" }}
+                      >
+                        {w.label.toUpperCase()}
+                      </span>
+                      <p className="mt-0.5 text-sm font-medium" style={{ color: "#2F4F46" }}>
+                        {w.handle}
                       </p>
                     </div>
                     <span
