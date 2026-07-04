@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { offerings } from "../lib/data";
+import BookingModal from "./BookingModal";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -23,51 +24,71 @@ export default function OfferingsGallery() {
     offset: ["start end", "end start"],
   });
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [bookingOffering, setBookingOffering] = useState<(typeof offerings)[number] | null>(null);
 
   return (
-    <section
-      id="offerings"
-      ref={ref}
-      className="relative bg-background py-32 md:min-h-[160vh]"
-    >
+    <>
+      <section
+        id="offerings"
+        ref={ref}
+        className="relative bg-background py-32 md:min-h-[160vh]"
+      >
 
-      <div className="relative z-10 mx-auto mb-16 max-w-[1500px] px-6 md:px-10">
-        <p className="font-display mt-4 max-w-xl text-3xl font-light leading-tight text-forest md:text-4xl">
-          Each offering is a doorway — a small ceremony, an act of becoming.
-        </p>
-      </div>
+        <div className="relative z-10 mx-auto mb-16 max-w-[1500px] px-6 md:px-10">
+          <p className="font-display mt-4 max-w-xl text-3xl font-light leading-tight text-forest md:text-4xl">
+            Each offering is a doorway — a small ceremony, an act of becoming.
+          </p>
+        </div>
 
-      {/* Mobile: 2-col grid */}
-      <div className="md:hidden grid grid-cols-2 gap-4 px-6 pb-8 [&:has(*:hover)>*:not(:hover)]:opacity-40 [&:has(*:hover)>*:not(:hover)]:blur-[2px] [&:has(*:hover)>*:not(:hover)]:scale-[0.97] [&>*]:transition-[opacity,filter,transform] [&>*]:duration-400">
-        {offerings.map((item, i) => (
-          <div key={item.name} className="relative aspect-[3/4] overflow-hidden rounded-xl" style={{ background: tile(i) }}>
-            <img src={item.image} alt={item.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent" />
-            <div className="absolute bottom-0 p-3">
-              <div className="flex items-end justify-between gap-1">
-                <h3 className="font-display text-sm font-light leading-tight text-white">{item.name}</h3>
-                <span className="shrink-0 text-sm font-semibold text-gold">{item.price}</span>
+        {/* Mobile: 2-col grid */}
+        <div className="md:hidden grid grid-cols-2 gap-4 px-6 pb-8 [&:has(*:hover)>*:not(:hover)]:opacity-40 [&:has(*:hover)>*:not(:hover)]:blur-[2px] [&:has(*:hover)>*:not(:hover)]:scale-[0.97] [&>*]:transition-[opacity,filter,transform] [&>*]:duration-400">
+          {offerings.map((item, i) => (
+            <button
+              key={item.name}
+              onClick={() => setBookingOffering(item)}
+              className="relative aspect-[3/4] overflow-hidden rounded-xl text-left"
+              style={{ background: tile(i) }}
+            >
+              <img src={item.image} alt={item.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent" />
+              <div className="absolute bottom-0 p-3">
+                <div className="flex items-end justify-between gap-1">
+                  <h3 className="font-display text-sm font-light leading-tight text-white">{item.name}</h3>
+                  <span className="shrink-0 text-sm font-semibold text-gold">{item.price}</span>
+                </div>
+                <p className="text-[0.62rem] tracking-[0.1em] text-white/60">{item.note}</p>
               </div>
-              <p className="text-[0.62rem] tracking-[0.1em] text-white/60">{item.note}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+              {/* Book CTA */}
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 bg-background/90 text-forest text-[0.6rem] tracking-widest uppercase font-medium rounded-full px-3 py-1 transition-opacity duration-300">
+                Book
+              </span>
+            </button>
+          ))}
+        </div>
 
-      {/* Desktop: floating parallax gallery */}
-      <div className="hidden md:block relative mx-auto h-[120vh] max-w-[1500px] px-6 md:px-10">
-        {offerings.map((item, i) => (
-          <FloatingOffering
-            key={item.name}
-            offering={item}
-            index={i}
-            progress={scrollYProgress}
-            dimmed={hoveredIndex !== null && hoveredIndex !== i}
-            onHover={(v) => setHoveredIndex(v ? i : null)}
-          />
-        ))}
-      </div>
-    </section>
+        {/* Desktop: floating parallax gallery */}
+        <div className="hidden md:block relative mx-auto h-[120vh] max-w-[1500px] px-6 md:px-10">
+          {offerings.map((item, i) => (
+            <FloatingOffering
+              key={item.name}
+              offering={item}
+              index={i}
+              progress={scrollYProgress}
+              dimmed={hoveredIndex !== null && hoveredIndex !== i}
+              onHover={(v) => setHoveredIndex(v ? i : null)}
+              onBook={() => setBookingOffering(item)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {bookingOffering && (
+        <BookingModal
+          offering={bookingOffering}
+          onClose={() => setBookingOffering(null)}
+        />
+      )}
+    </>
   );
 }
 
@@ -77,12 +98,14 @@ function FloatingOffering({
   progress,
   dimmed,
   onHover,
+  onBook,
 }: {
   offering: (typeof offerings)[number];
   index: number;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
   dimmed: boolean;
   onHover: (hovered: boolean) => void;
+  onBook: () => void;
 }) {
   const depth = offering.depth;
   const depthScale = 0.82 + depth * 0.12;
@@ -110,8 +133,8 @@ function FloatingOffering({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-10%" }}
         transition={{ duration: 1, ease, delay: index * 0.08 }}
-        whileHover={{ scale: 1.05 }}
         className="cursor-pointer"
+        onClick={onBook}
       >
         {/* Offering image */}
         <div
@@ -129,6 +152,11 @@ function FloatingOffering({
           {/* Top tag */}
           <span className="absolute left-3 top-3 rounded-full bg-background/15 px-2.5 py-0.5 text-[0.6rem] tracking-[0.14em] text-white/80 backdrop-blur-sm">
             {offering.note}
+          </span>
+
+          {/* Book CTA — revealed on hover */}
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 bg-background/90 text-forest text-[0.65rem] tracking-[0.18em] uppercase font-medium rounded-full px-4 py-1.5 transition-opacity duration-300 whitespace-nowrap">
+            Book Now
           </span>
 
           {/* Bottom details */}
