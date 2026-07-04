@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import ContactForms from "./ContactForms";
 
+const SITE_URL = "https://awakynn.com";
+
 const socials = [
   { label: "Instagram", handle: "@awakynn.yoga", href: "https://instagram.com/awakynn.yoga" },
   { label: "YouTube", handle: "Awakynn", href: "https://www.youtube.com/@awakynn.yogaofficial" },
@@ -32,32 +34,60 @@ export const metadata: Metadata = {
     "Reach out to Awakynn to book a yoga class, enquire about private 1-on-1 sessions, Ayurvedic diet consulting, or meditation programs. We respond within 24 hours.",
   keywords: [
     "book yoga class online",
+    "book yoga class Kolkata",
+    "book yoga class Hooghly",
     "private yoga session India",
+    "private yoga session Chinsurah",
     "contact Awakynn",
     "Ayurvedic consulting enquiry",
     "1-on-1 yoga booking",
-    "yoga teacher contact India",
-    "online wellness consultation",
+    "yoga teacher contact Hooghly",
+    "online wellness consultation India",
   ],
-  alternates: { canonical: "https://awakynn.com/contact" },
+  alternates: { canonical: `${SITE_URL}/contact` },
   openGraph: {
     title: "Contact & Book a Session – Awakynn",
     description:
       "Book yoga classes, private 1-on-1 sessions, Ayurvedic diet consulting, or meditation programs. We respond within 24 hours.",
-    url: "https://awakynn.com/contact",
-    images: [{ url: "https://awakynn.com/og.jpg", width: 1200, height: 630, alt: "Contact Awakynn" }],
+    url: `${SITE_URL}/contact`,
+    images: [{ url: `${SITE_URL}/og.jpg`, width: 1200, height: 630, alt: "Contact Awakynn" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Contact & Book a Session – Awakynn",
     description: "Book yoga, meditation, and Ayurvedic consulting sessions. We respond within 24 hours.",
-    images: ["https://awakynn.com/og.jpg"],
+    images: [`${SITE_URL}/og.jpg`],
   },
+};
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Contact", item: `${SITE_URL}/contact` },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqs.map(({ q, a }) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    },
+  ],
 };
 
 export default function ContactPage() {
   return (
     <main style={{ backgroundColor: "#faf8f5", color: "#222222" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }}
+      />
       {/* Hero */}
       <section className="mx-auto max-w-[1500px] px-6 pt-28 pb-16 md:px-10">
         <h1

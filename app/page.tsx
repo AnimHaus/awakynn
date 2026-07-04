@@ -24,8 +24,16 @@ export const metadata: Metadata = {
   description:
     "Join online and offline yoga, meditation and Ayurvedic wellness sessions across Kolkata, Hooghly, Chinsurah, Chandannagar and surrounding areas.",
   keywords: [
-    "yoga classes online India",
-    "yoga for beginners",
+    "yoga classes Kolkata",
+    "yoga classes Hooghly",
+    "yoga classes Chinsurah",
+    "yoga classes Chandannagar",
+    "yoga classes Bandel",
+    "yoga classes West Bengal",
+    "yoga near me Kolkata",
+    "yoga near Chinsurah",
+    "online yoga classes India",
+    "yoga for beginners Kolkata",
     "yoga for seniors",
     "yoga for arthritis",
     "online yoga classes",
@@ -38,6 +46,7 @@ export const metadata: Metadata = {
     "Awakynn yoga",
     "Monalisa yoga teacher",
     "wellness India",
+    "Ayurvedic wellness Hooghly",
   ],
   alternates: { canonical: "https://awakynn.com" },
   openGraph: {

@@ -105,6 +105,13 @@ export default function Navbar() {
             Classes
           </TransitionLink>
           <TransitionLink
+            href="/gallery"
+            className="text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-colors duration-300 hover:opacity-60"
+            style={{ color: navTextColor }}
+          >
+            Gallery
+          </TransitionLink>
+          <TransitionLink
             href="/contact"
             className="ml-2 flex items-center justify-between gap-6 px-5 py-2.5 border text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-all duration-300"
             style={{
@@ -175,6 +182,14 @@ export default function Navbar() {
             onClick={() => setOpen(false)}
           >
             Classes
+          </TransitionLink>
+          <TransitionLink
+            href="/gallery"
+            className="text-xs font-medium tracking-[0.22em] uppercase py-1 transition-opacity hover:opacity-60"
+            style={{ color: "var(--st)" }}
+            onClick={() => setOpen(false)}
+          >
+            Gallery
           </TransitionLink>
           {activeEvent && (
             <TransitionLink
