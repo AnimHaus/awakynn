@@ -46,11 +46,11 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
   return (
     <>
       {/* Masonry-style responsive grid */}
-      <div className="columns-2 sm:columns-3 lg:columns-4 gap-3 md:gap-4">
+      <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 md:gap-5">
         {items.map((item, idx) => (
           <motion.div
             key={item.id}
-            className="break-inside-avoid mb-3 md:mb-4 group relative cursor-pointer overflow-hidden rounded-sm"
+            className="break-inside-avoid mb-4 md:mb-5 group relative cursor-pointer overflow-hidden rounded-sm"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: Math.min(idx * 0.04, 0.4) }}
