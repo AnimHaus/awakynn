@@ -72,7 +72,7 @@ export default function Navbar() {
               width={120}
               height={36}
               className="h-12 md:h-16 w-auto object-contain"
-              priority
+              unoptimized
             />
           </TransitionLink>
           {activeEvent && (

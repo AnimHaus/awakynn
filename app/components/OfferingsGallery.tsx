@@ -1,9 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { offerings } from "../lib/data";
 import BookingModal from "./BookingModal";
+
+/** These offerings open the booking modal; all others navigate to the register page. */
+const MODAL_SLUGS = new Set(["sunday-workshop", "ayurvedic-diet-consulting", "clarity-session"]);
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -23,8 +27,17 @@ export default function OfferingsGallery() {
     target: ref,
     offset: ["start end", "end start"],
   });
+  const router = useRouter();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [bookingOffering, setBookingOffering] = useState<(typeof offerings)[number] | null>(null);
+
+  function handleOfferingClick(item: (typeof offerings)[number]) {
+    if (MODAL_SLUGS.has(item.slug)) {
+      setBookingOffering(item);
+    } else {
+      router.push(`/register?service=${item.slug}`);
+    }
+  }
 
   return (
     <>
@@ -45,7 +58,7 @@ export default function OfferingsGallery() {
           {offerings.map((item, i) => (
             <button
               key={item.name}
-              onClick={() => setBookingOffering(item)}
+              onClick={() => handleOfferingClick(item)}
               className="relative aspect-[3/4] overflow-hidden rounded-xl text-left"
               style={{ background: tile(i) }}
             >
@@ -76,7 +89,7 @@ export default function OfferingsGallery() {
               progress={scrollYProgress}
               dimmed={hoveredIndex !== null && hoveredIndex !== i}
               onHover={(v) => setHoveredIndex(v ? i : null)}
-              onBook={() => setBookingOffering(item)}
+              onBook={() => handleOfferingClick(item)}
             />
           ))}
         </div>
