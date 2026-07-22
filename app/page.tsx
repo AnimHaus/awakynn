@@ -54,13 +54,13 @@ export const metadata: Metadata = {
     description:
       "Join online and offline yoga, meditation and Ayurvedic wellness sessions across Kolkata, Hooghly, Chinsurah, Chandannagar and surrounding areas.",
     url: "https://awakynn.com",
-    images: [{ url: "https://awakynn.com/og.jpg", width: 1200, height: 630, alt: "Awakynn – Awaken Within" }],
+    images: [{ url: "https://awakynn.com/og.png", width: 1200, height: 630, alt: "Awakynn – Awaken Within" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Awakynn – Yoga, Meditation & Ayurvedic Wellness",
     description: "Online yoga, meditation, pranayama, Ayurvedic diet consulting and mental clarity sessions for all ages.",
-    images: ["https://awakynn.com/og.jpg"],
+    images: ["https://awakynn.com/og.png"],
   },
 };
 

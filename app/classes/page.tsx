@@ -26,13 +26,13 @@ export const metadata: Metadata = {
     description:
       "Scheduled live yoga, meditation, pranayama, and breathwork classes via Google Meet. New sessions weekly — all levels welcome.",
     url: `${SITE_URL}/classes`,
-    images: [{ url: `${SITE_URL}/og.jpg`, width: 1200, height: 630, alt: "Awakynn Live Classes" }],
+    images: [{ url: `${SITE_URL}/og.png`, width: 1200, height: 630, alt: "Awakynn Live Classes" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Live Yoga & Meditation Schedule – Awakynn",
     description: "Scheduled live yoga, meditation and breathwork classes on Google Meet. All levels welcome.",
-    images: [`${SITE_URL}/og.jpg`],
+    images: [`${SITE_URL}/og.png`],
   },
 };
 

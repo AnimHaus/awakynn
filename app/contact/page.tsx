@@ -50,13 +50,13 @@ export const metadata: Metadata = {
     description:
       "Book yoga classes, private 1-on-1 sessions, Ayurvedic diet consulting, or meditation programs. We respond within 24 hours.",
     url: `${SITE_URL}/contact`,
-    images: [{ url: `${SITE_URL}/og.jpg`, width: 1200, height: 630, alt: "Contact Awakynn" }],
+    images: [{ url: `${SITE_URL}/og.png`, width: 1200, height: 630, alt: "Contact Awakynn" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Contact & Book a Session – Awakynn",
     description: "Book yoga, meditation, and Ayurvedic consulting sessions. We respond within 24 hours.",
-    images: [`${SITE_URL}/og.jpg`],
+    images: [`${SITE_URL}/og.png`],
   },
 };
 

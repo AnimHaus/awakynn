@@ -22,7 +22,7 @@ const inter = Inter({
 });
 
 const SITE_URL = "https://awakynn.com";
-const OG_IMAGE = `${SITE_URL}/og.jpg`;
+const OG_IMAGE = `${SITE_URL}/og.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
